@@ -1,7 +1,6 @@
 #ifndef  __return_exception_HPP__
 # define __return_exception_HPP__
 
-# include <cstdint>
 # include <variant>
 # include <functional>
 # include <utility>
