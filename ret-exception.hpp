@@ -50,7 +50,8 @@ class Ret_except {
     {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
             std::visit([this](auto &&e) {
-                if constexpr(!std::is_same_v<std::decay_t<decltype(e)>, std::monostate>) {
+                using Exception_t = std::decay_t<decltype(e)>;
+                if constexpr(!std::is_same_v<Exception_t, Ret> && !std::is_same_v<Exception_t, std::monostate>) {
                     is_exception_handled = 1;
                     throw std::move(e);
                 }
@@ -123,13 +124,11 @@ public:
             std::visit([&, this](auto &&e) {
                 using Exception_t = std::decay_t<decltype(e)>;
 
-                if constexpr(std::is_same_v<Exception_t, std::monostate>)
-                    return;
-
-                if constexpr(std::is_invocable_v<std::decay_t<F>, Exception_t>) {
-                    is_exception_handled = 1;
-                    std::invoke(std::forward<F>(f), std::forward<decltype(e)>(e));
-                }
+                if constexpr(!std::is_same_v<Exception_t, std::monostate> && !std::is_same_v<Exception_t, Ret>)
+                    if constexpr(std::is_invocable_v<std::decay_t<F>, Exception_t>) {
+                        is_exception_handled = 1;
+                        std::invoke(std::forward<F>(f), std::forward<decltype(e)>(e));
+                    }
             }, v);
 
         return *this;
