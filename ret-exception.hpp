@@ -113,7 +113,7 @@ public:
      *             return;
      *         }).Catch([](const auto &e) {
      *             throw e;
-     *         })
+     *         });
      *     }
      */
     template <class F>
