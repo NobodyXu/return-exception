@@ -1,5 +1,4 @@
 #include "ret-exception.hpp"
-#include <cstdio>
 #include <cassert>
 
 int main(int argc, char* argv[])
@@ -10,7 +9,7 @@ int main(int argc, char* argv[])
         r.Catch([](void *p) {
             assert(false);
         }).Catch([](int i) {
-            std::printf("%u\n", static_cast<unsigned>(i));
+            assert(i == -1);
         }).Catch([](auto &e) {
             assert(false);
         });
@@ -23,7 +22,7 @@ int main(int argc, char* argv[])
 
         r.set_exception<long>(-1L);
     } catch (long l) {
-        std::printf("%lu\n", static_cast<unsigned long>(l));
+        assert(l == -1);
     }
 
     try {
@@ -38,7 +37,7 @@ int main(int argc, char* argv[])
     try {
         Ret_except<char, int, long, void*> r{-1};
     } catch (int i) {
-        std::printf("%u\n", static_cast<unsigned>(i));
+        assert(i == -1);
     }
 
     return 0;
