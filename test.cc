@@ -18,6 +18,20 @@ int main(int argc, char* argv[])
     }
 
     try {
+        Ret_except<void, int, long, void*> r{std::in_place_type<int>, -1};
+
+        r.Catch([](void *p) {
+            assert(false);
+        }).Catch([](int i) {
+            assert(i == -1);
+        }).Catch([](auto &e) {
+            assert(false);
+        });
+    } catch (...) {
+        assert(false);
+    }
+
+    try {
         Ret_except<char, int, long, void*> r{std::in_place_type<int>, -1};
 
         r.Catch([](void *p) {
