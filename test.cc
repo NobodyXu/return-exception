@@ -92,5 +92,13 @@ int main(int argc, char* argv[])
         assert(false);
     }
 
+    try {
+        Ret_except<char, int> r{};
+        assert(r.get_return_value() == 'c');
+    } catch (const std::bad_variant_access &e) {
+    } catch (...) {
+        assert(false);
+    }
+
     return 0;
 }
