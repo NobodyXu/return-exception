@@ -49,9 +49,11 @@ class Ret_except {
     void throw_if_hold_exp()
     {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
-            std::visit([](auto &&e) {
-                if (!std::is_same_v<std::decay_t<decltype(e)>, std::monostate>)
+            std::visit([this](auto &&e) {
+                if (!std::is_same_v<std::decay_t<decltype(e)>, std::monostate>) {
+                    is_exception_handled = 1;
                     throw std::move(e);
+                }
             }, v);
     }
 
