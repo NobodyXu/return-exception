@@ -23,5 +23,11 @@ int main(int argc, char* argv[])
         std::printf("%lu\n", static_cast<unsigned long>(l));
     }
 
+    try {
+        Ret_except<char, int, long, void*> r{-1};
+    } catch (int i) {
+        std::printf("%u\n", static_cast<unsigned>(i));
+    }
+
     return 0;
 }

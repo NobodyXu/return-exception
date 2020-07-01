@@ -25,6 +25,27 @@ class Ret_except {
     template <class T>
     static constexpr bool holds_exp_v = (std::is_same_v<T, Ts> || ...);
 
+    template <class T>
+    static constexpr bool holds_type_v = std::is_same_v<T, Ret> || holds_exp_v<T>;
+
+    template <class decay_T, class T>
+    static constexpr bool is_constructible() noexcept
+    {
+        if constexpr(std::is_pointer_v<decay_T>)
+            return true;
+        else
+            return std::is_constructible_v<decay_T, T>;
+    }
+
+    template <class decay_T, class T>
+    static constexpr bool is_nothrow_constructible() noexcept
+    {
+        if constexpr(std::is_pointer_v<decay_T>)
+            return true;
+        else
+            return std::is_nothrow_constructible_v<decay_T, T>;
+    }
+
     void throw_if_hold_exp()
     {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
@@ -37,12 +58,17 @@ class Ret_except {
 public:
     Ret_except() = default;
 
+    template <class T, class decay_T = std::decay_t<T>, 
+              class = std::enable_if_t<holds_type_v<decay_T> && is_constructible<decay_T, T>()>>
+    Ret_except(T &&obj)
+        noexcept(is_nothrow_constructible<decay_T, T>()):
+            has_exception{!std::is_same_v<decay_T, Ret>}, 
+            v{std::in_place_type<decay_T>, std::forward<T>(obj)}
+    {}
+
     template <class T, class ...Args, 
-              class = std::enable_if_t<(holds_exp_v<T> || std::is_same_v<T, Ret>) && 
-                                       std::is_constructible_v<T, Args...>
-                                       >
-              >
-    Ret_except(std::in_place_type_t<T> type, Args &&...args) 
+              class = std::enable_if_t<holds_type_v<T> && std::is_constructible_v<T, Args...>>>
+    Ret_except(std::in_place_type_t<T> type, Args &&...args)
         noexcept(std::is_nothrow_constructible_v<T, Args...>):
             has_exception{!std::is_same_v<T, Ret>}, 
             v{type, std::forward<Args>(args)...}
