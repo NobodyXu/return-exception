@@ -14,6 +14,12 @@ int main(int argc, char* argv[])
         }).Catch([](auto &e) {
             assert(false);
         });
+    } catch (...) {
+        assert(false);
+    }
+
+    try {
+        Ret_except<char, int, long, void*> r{};
 
         r.set_exception<long>(-1L);
     } catch (long l) {
@@ -25,9 +31,7 @@ int main(int argc, char* argv[])
 
         r.set_return_value('c');
         assert(r.get_return_value() == 'c');
-    } catch (const std::exception &e) {
-        assert(false);
-    } catch (int i) {
+    } catch (...) {
         assert(false);
     }
 
