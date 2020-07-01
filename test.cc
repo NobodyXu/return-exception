@@ -55,6 +55,12 @@ int main(int argc, char* argv[])
     }
 
     try {
+        Ret_except<char, int, long, void*> r{-1};
+    } catch (int i) {
+        assert(i == -1);
+    }
+
+    try {
         Ret_except<char, int> r;
 
         r.set_return_value('c');
@@ -75,11 +81,6 @@ int main(int argc, char* argv[])
         assert(r.get_return_value() == 'c');
     } catch (...) {
         assert(false);
-    }
-    try {
-        Ret_except<char, int, long, void*> r{-1};
-    } catch (int i) {
-        assert(i == -1);
     }
 
     return 0;
