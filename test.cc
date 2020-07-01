@@ -83,5 +83,14 @@ int main(int argc, char* argv[])
         assert(false);
     }
 
+    try {
+        Ret_except<char, int> r{-1};
+        assert(r.get_return_value() == 'c');
+    } catch (int i) {
+        assert(i == -1);
+    } catch (...) {
+        assert(false);
+    }
+
     return 0;
 }
