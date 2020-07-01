@@ -162,13 +162,13 @@ public:
         return std::get<Ret>(v);
     }
 
-    auto& get_return_value() &&
+    auto&& get_return_value() &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    auto& get_return_value() const &&
+    auto&& get_return_value() const &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
