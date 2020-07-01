@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
             assert(false);
         });
 
-        r.set_return_value<char>('c');
+        r.set_return_value('c');
         assert(r.get_return_value() == 'c');
 
         r.set_exception<long>(-1L);

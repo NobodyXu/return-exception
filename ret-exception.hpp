@@ -93,13 +93,13 @@ public:
         v.template emplace<T>(std::forward<Args>(args)...);
     }
 
-    template <class T, class ...Args, 
-              class = std::enable_if_t<std::is_same_v<T, Ret> && std::is_constructible_v<T, Args...>>>
+    template <class ...Args, 
+              class = std::enable_if_t<std::is_constructible_v<Ret, Args...>>>
     void set_return_value(Args &&...args)
-        noexcept(std::is_nothrow_constructible_v<T, Args...>)
+        noexcept(std::is_nothrow_constructible_v<Ret, Args...>)
     {
         has_exception = 1;
-        v.template emplace<T>(std::forward<Args>(args)...);
+        v.template emplace<Ret>(std::forward<Args>(args)...);
     }
 
     /**
