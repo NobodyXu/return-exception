@@ -50,6 +50,19 @@ int main(int argc, char* argv[])
     }
 
     try {
+        Ret_except<char, int> r{'c'};
+        assert(r.get_return_value() == 'c');
+    } catch (...) {
+        assert(false);
+    }
+
+    try {
+        Ret_except<char, int> r{std::in_place_type<char>, 'c'};
+        assert(r.get_return_value() == 'c');
+    } catch (...) {
+        assert(false);
+    }
+    try {
         Ret_except<char, int, long, void*> r{-1};
     } catch (int i) {
         assert(i == -1);
