@@ -1,5 +1,9 @@
+CXXFLAGS := -O2 -std=c++17
+LDFLAGS := -Wl,--strip-all
+
 test: test.cc ret-exception.hpp
-	$(CXX) -std=c++17 test.cc -O2 -o $@ && ./$@
+	$(CXX) test.cc $(CXXFLAGS) $(LDFLAGS) -o $@
+	./$@
 
 clean:
 	rm -f test
