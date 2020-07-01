@@ -135,6 +135,22 @@ public:
         return *this;
     }
 
+    /**
+     * Example:
+     *     auto g() -> Ret_except<std::string, PageNotFound, std::runtime_error, std::invalid_argument>;
+     *     void f()
+     *     {
+     *         auto ret = g();
+     *         ret.Catch([](const std::runtime_error &e) {
+     *             return;
+     *         }).Catch([](const auto &e) {
+     *             throw e;
+     *         });
+     *
+     *         auto &s = ret.get_return_value();
+     *         std::cout << s << std::endl;
+     *     }
+     */
     auto& get_return_value() &
     {
         throw_if_hold_exp();
