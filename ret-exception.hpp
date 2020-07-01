@@ -98,7 +98,7 @@ public:
     void set_return_value(Args &&...args)
         noexcept(std::is_nothrow_constructible_v<Ret, Args...>)
     {
-        has_exception = 1;
+        has_exception = 0;
         v.template emplace<Ret>(std::forward<Args>(args)...);
     }
 

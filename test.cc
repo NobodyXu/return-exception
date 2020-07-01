@@ -15,12 +15,20 @@ int main(int argc, char* argv[])
             assert(false);
         });
 
-        r.set_return_value('c');
-        assert(r.get_return_value() == 'c');
-
         r.set_exception<long>(-1L);
     } catch (long l) {
         std::printf("%lu\n", static_cast<unsigned long>(l));
+    }
+
+    try {
+        Ret_except<char, int> r;
+
+        r.set_return_value('c');
+        assert(r.get_return_value() == 'c');
+    } catch (const std::exception &e) {
+        assert(false);
+    } catch (int i) {
+        assert(false);
     }
 
     try {
