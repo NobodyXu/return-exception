@@ -18,6 +18,21 @@ int main(int argc, char* argv[])
     }
 
     try {
+        Ret_except<char, int, long, void*> r{std::in_place_type<int>, -1};
+
+        r.Catch([](void *p) {
+            assert(false);
+        }).Catch([](auto i) {
+            // Ensure the function actually get called at runtime takes int
+            assert((std::is_same_v<decltype(i), int>));
+            if constexpr(std::is_same_v<decltype(i), int>)
+                assert(i == -1);
+        });
+    } catch (...) {
+        assert(false);
+    }
+
+    try {
         Ret_except<char, int, long, void*> r{};
 
         r.set_exception<long>(-1L);
