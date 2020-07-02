@@ -11,6 +11,12 @@
 # endif
 
 namespace {
+template <class T>
+constexpr auto type_name() -> const char*
+{
+    return __PRETTY_FUNCTION__ + 49;
+}
+
 /**
  * Ret_except forces the exception returned to be handled, otherwise it would be
  * thrown in destructor.
@@ -61,7 +67,7 @@ class Ret_except {
 # if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
                     throw std::move(e);
 # else
-                    errx(1, "Exception thrown in %s: %s", __PRETTY_FUNCTION__, e.what());
+                    errx(1, "[Exception%s: %s", type_name<Exception_t>(), e.what());
 # endif
                 }
             }, v);
