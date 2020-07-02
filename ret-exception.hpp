@@ -6,7 +6,7 @@
 # include <utility>
 # include <type_traits>
 
-# if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
+# if !defined(__EXCEPTIONS) || !defined(__cpp_exceptions)
 #  include <err.h>
 #  include <cstdio>
 # endif
