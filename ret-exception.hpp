@@ -8,6 +8,7 @@
 
 # if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
 #  include <err.h>
+#  include <cstdio>
 # endif
 
 namespace {
@@ -67,7 +68,19 @@ class Ret_except {
 # if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
                     throw std::move(e);
 # else
-                    errx(1, "[Exception%s: %s", type_name<Exception_t>(), e.what());
+                    std::fprintf(stderr, "[Exception%s ", type_name<Exception_t>());
+
+                    if constexpr(std::is_base_of_v<std::exception, Exception_t>)
+                        errx(1, "%s", e.what());
+                    else if constexpr(std::is_pointer_v<Exception_t>)
+                        errx(1, "%p", e);
+                    else if constexpr(std::is_integral_v<Exception_t>) {
+                        if constexpr(std::is_unsigned_v<Exception_t>)
+                            errx(1, "%llu", static_cast<unsigned long long>(e));
+                        else
+                            errx(1, "%lld", static_cast<long long>(e));
+                    } else
+                        errx(1, "");
 # endif
                 }
             }, v);
