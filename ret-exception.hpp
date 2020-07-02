@@ -29,9 +29,10 @@ class Ret_except {
     bool is_exception_handled = 0;
     bool has_exception = 0;
 
-    std::conditional_t<std::is_void_v<Ret>, 
-                       std::variant<std::monostate, Ts...>,
-                       std::variant<std::monostate, Ret, Ts...>> v;
+    using variant_t = std::conditional_t<std::is_void_v<Ret>, 
+                                         std::variant<std::monostate, Ts...>,
+                                         std::variant<std::monostate, Ret, Ts...>>;
+    variant_t v;
 
     template <class T>
     static constexpr bool holds_exp_v = (std::is_same_v<T, Ts> || ...);
@@ -105,11 +106,19 @@ public:
             v{type, std::forward<Args>(args)...}
     {}
 
-    /**
-     * cp/mv ctor/assignment overload is not required as C++17 has copy elision guarantee.
-     */
     Ret_except(const Ret_except&) = delete;
-    Ret_except(Ret_except&&) = delete;
+
+    /**
+     * move constructor is required as NRVO isn't guaranteed to happen.
+     */
+    Ret_except(Ret_except &&other) noexcept(std::is_nothrow_move_constructible_v<variant_t>):
+        is_exception_handled{other.is_exception_handled},
+        has_exception{other.has_exception},
+        v{std::move(other.v)}
+    {
+        other.has_exception = 0;
+        other.v.template emplace<std::monostate>();
+    }
 
     Ret_except& operator = (const Ret_except&) = delete;
     Ret_except& operator = (Ret_except&&) = delete;
