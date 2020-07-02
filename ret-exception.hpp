@@ -6,6 +6,10 @@
 # include <utility>
 # include <type_traits>
 
+# if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
+#  include <err.h>
+# endif
+
 namespace {
 /**
  * Ret_except forces the exception returned to be handled, otherwise it would be
@@ -53,7 +57,12 @@ class Ret_except {
                 using Exception_t = std::decay_t<decltype(e)>;
                 if constexpr(!std::is_same_v<Exception_t, Ret> && !std::is_same_v<Exception_t, std::monostate>) {
                     is_exception_handled = 1;
+
+# if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
                     throw std::move(e);
+# else
+                    errx(1, "Exception thrown in %s: %s", __PRETTY_FUNCTION__, e.what());
+# endif
                 }
             }, v);
     }
