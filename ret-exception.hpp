@@ -17,6 +17,7 @@ constexpr auto type_name() -> const char*
 {
     return __PRETTY_FUNCTION__ + 49;
 }
+}
 
 /**
  * Ret_except forces the exception returned to be handled, otherwise it would be
@@ -216,6 +217,5 @@ public:
         throw_if_hold_exp();
     }
 };
-}
 
 #endif
