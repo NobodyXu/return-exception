@@ -7,13 +7,17 @@ int main(int argc, char* argv[])
     try {
         Ret_except<char, int, long, void*> r{std::in_place_type<int>, -1};
 
+        bool is_visited = false;
         r.Catch([](void *p) {
             assert(false);
-        }).Catch([](int i) {
+        }).Catch([&](int i) {
+            assert(!is_visited);
             assert(i == -1);
+            is_visited = true;
         }).Catch([](auto &e) {
             assert(false);
         });
+        assert(is_visited);
     } catch (...) {
         assert(false);
     }
@@ -22,14 +26,20 @@ int main(int argc, char* argv[])
     try {
         Ret_except<char, int, long, void*> r{std::in_place_type<int>, -1};
 
+        bool is_visited = false;
         r.Catch([](void *p) {
             assert(false);
-        }).Catch([](auto i) {
+        }).Catch([&](auto i) {
+            assert(!is_visited);
+
             // Ensure the function actually get called at runtime takes int
             assert((std::is_same_v<decltype(i), int>));
             if constexpr(std::is_same_v<decltype(i), int>)
                 assert(i == -1);
+
+            is_visited = true;
         });
+        assert(is_visited);
     } catch (...) {
         assert(false);
     }
@@ -38,13 +48,17 @@ int main(int argc, char* argv[])
     try {
         Ret_except<void, int, long, void*> r{std::in_place_type<int>, -1};
 
+        bool is_visited = false;
         r.Catch([](void *p) {
             assert(false);
-        }).Catch([](int i) {
+        }).Catch([&](int i) {
+            assert(!is_visited);
             assert(i == -1);
+            is_visited = true;
         }).Catch([](auto &e) {
             assert(false);
         });
+        assert(is_visited);
     } catch (...) {
         assert(false);
     }
