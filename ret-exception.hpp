@@ -223,24 +223,28 @@ public:
      *         std::cout << s << std::endl;
      *     }
      */
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
     auto& get_return_value() &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
     auto& get_return_value() const &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
     auto&& get_return_value() &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
     auto&& get_return_value() const &&
     {
         throw_if_hold_exp();
