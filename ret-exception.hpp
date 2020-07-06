@@ -11,7 +11,7 @@
 #  include <cstdio>
 # endif
 
-namespace {
+namespace ret_exception::impl {
 template <class T>
 constexpr auto type_name() -> const char*
 {
@@ -35,7 +35,7 @@ static constexpr bool is_nothrow_constructible() noexcept
     else
         return std::is_nothrow_constructible_v<decay_T, T>;
 }
-}
+} /* namespace ret_exception::impl */
 
 /**
  * Ret_except forces the exception returned to be handled, otherwise it would be
@@ -70,7 +70,7 @@ class Ret_except {
 # if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
                     throw std::move(e);
 # else
-                    std::fprintf(stderr, "[Exception%s ", type_name<Exception_t>());
+                    std::fprintf(stderr, "[Exception%s ", ret_exception::impl::type_name<Exception_t>());
 
                     if constexpr(std::is_base_of_v<std::exception, Exception_t>)
                         errx(1, "%s", e.what());
@@ -92,9 +92,10 @@ public:
     Ret_except() = default;
 
     template <class T, class decay_T = std::decay_t<T>, 
-              class = std::enable_if_t<holds_type_v<decay_T> && is_constructible<decay_T, T>()>>
+              class = std::enable_if_t<holds_type_v<decay_T> && 
+                      ret_exception::impl::is_constructible<decay_T, T>()>>
     Ret_except(T &&obj)
-        noexcept(is_nothrow_constructible<decay_T, T>()):
+        noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>()):
             has_exception{!std::is_same_v<decay_T, Ret>}, 
             v{std::in_place_type<decay_T>, std::forward<T>(obj)}
     {}
