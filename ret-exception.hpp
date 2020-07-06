@@ -218,4 +218,25 @@ public:
     }
 };
 
+/**
+ * Example usage:
+ *
+ * Given that:
+ *
+ *     class A {
+ *     public:
+ *         A(Ret_except<void, std::exception> &e);
+ *     };
+ *     class B {
+ *     public:
+ *     };
+ *
+ * To tell the different between A (requires Ret_except) and B,
+ * use std::is_constructible_v<type, Ret_except_detector_t>.
+ */
+struct Ret_except_detector_t {
+    template <class Ret, class ...Ts>
+    operator Ret_except<Ret, Ts...>& () const noexcept;
+};
+
 #endif

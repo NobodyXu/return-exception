@@ -1,9 +1,9 @@
 CXXFLAGS := -O2 -std=c++17
 LDFLAGS := -Wl,--strip-all
 
-all: test test2
+all: test test2 test3
 
-test: test.cc ret-exception.hpp
+%: %.cc ret-exception.hpp
 	$(CXX) test.cc $(CXXFLAGS) $(LDFLAGS) -o $@
 	./$@
 
