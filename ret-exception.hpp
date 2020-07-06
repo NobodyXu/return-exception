@@ -17,6 +17,24 @@ constexpr auto type_name() -> const char*
 {
     return __PRETTY_FUNCTION__ + 49;
 }
+
+template <class decay_T, class T>
+static constexpr bool is_constructible() noexcept
+{
+    if constexpr(std::is_pointer_v<decay_T>)
+        return true;
+    else
+        return std::is_constructible_v<decay_T, T>;
+}
+
+template <class decay_T, class T>
+static constexpr bool is_nothrow_constructible() noexcept
+{
+    if constexpr(std::is_pointer_v<decay_T>)
+        return true;
+    else
+        return std::is_nothrow_constructible_v<decay_T, T>;
+}
 }
 
 /**
@@ -40,24 +58,6 @@ class Ret_except {
 
     template <class T>
     static constexpr bool holds_type_v = std::is_same_v<T, Ret> || holds_exp_v<T>;
-
-    template <class decay_T, class T>
-    static constexpr bool is_constructible() noexcept
-    {
-        if constexpr(std::is_pointer_v<decay_T>)
-            return true;
-        else
-            return std::is_constructible_v<decay_T, T>;
-    }
-
-    template <class decay_T, class T>
-    static constexpr bool is_nothrow_constructible() noexcept
-    {
-        if constexpr(std::is_pointer_v<decay_T>)
-            return true;
-        else
-            return std::is_nothrow_constructible_v<decay_T, T>;
-    }
 
     void throw_if_hold_exp()
     {
