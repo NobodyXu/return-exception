@@ -59,6 +59,19 @@ class Ret_except {
     template <class T>
     static constexpr bool holds_type_v = std::is_same_v<T, Ret> || holds_exp_v<T>;
 
+    struct Matcher {
+        Ret_except &r;
+    
+        template <class T, class decay_T = std::decay_t<T>,
+                  class = std::enable_if_t<holds_exp_v<decay_T> && 
+                          ret_exception::impl::is_constructible<decay_T, T>()>>
+        void operator () (T &&obj)
+            noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>())
+        {
+            r.set_exception<decay_T>(std::forward<T>(obj));
+        }
+    };
+
     void throw_if_hold_exp()
     {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
@@ -107,6 +120,27 @@ public:
             has_exception{!std::is_same_v<T, Ret>}, 
             v{type, std::forward<Args>(args)...}
     {}
+
+    /**
+     * Suppose r.v currently holds exception E.
+     *
+     * The 2 ctors below would only cp/mv the variable held by r.v only if
+     * E is also in Ts...
+     *
+     * These ctors won't copy over Ret.
+     */
+    template <class Ret_t2, class ...Tps>
+    Ret_except(Ret_except<Ret_t2, Tps...> &r)
+        noexcept(noexcept(r.Catch(Matcher{*this})))
+    {
+        r.Catch(Matcher{*this});
+    }
+    template <class Ret_t2, class ...Tps>
+    Ret_except(Ret_except<Ret_t2, Tps...> &&r)
+        noexcept(noexcept(std::declval<Ret_except<Ret_t2, Tps...>&&>().Catch(Matcher{*this})))
+    {
+        std::forward<Ret_except<Ret_t2, Tps...>>(r).Catch(Matcher{*this});
+    }
 
     Ret_except(const Ret_except&) = delete;
 
@@ -194,7 +228,7 @@ public:
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
-    
+
     auto& get_return_value() const &
     {
         throw_if_hold_exp();
