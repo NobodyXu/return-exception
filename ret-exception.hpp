@@ -47,10 +47,25 @@ class glue_ret_except<Ret_except<Ret1, Ts...>, Ret_except<Ret2, Tps...>> {
 public:
     using type = Ret_except<Ret1, Ts..., Tps...>;
 };
+
+// primary template handles types that have no nested ::Ret_except_t member:
+template <class T, class Ret_except_t, class = std::void_t<>>
+struct glue_ret_except_from {
+    using type = Ret_except_t;
+};
+ 
+// specialization recognizes types that do have a nested ::Ret_except_t member:
+template <class T, class Ret_except_t>
+struct glue_ret_except_from<T, Ret_except_t, std::void_t<typename T::Ret_except_t>>:
+    public glue_ret_except<Ret_except_t, typename T::Ret_except_t>
+{};
 } /* namespace ret_exception::impl */
 
 template <class Ret_except_t1, class Ret_except_t2>
 using glue_ret_except_t = typename ret_exception::impl::glue_ret_except<Ret_except_t1, Ret_except_t2>::type;
+
+template <class T, class Ret_except_t>
+using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_from<T, Ret_except_t>::type;
 
 /**
  * Ret_except forces the exception returned to be handled, otherwise it would be

@@ -12,12 +12,22 @@ using Ret_except_t1 = Ret_except<void, int, void*>;
 using Ret_except_t2 = Ret_except<void, void*>;
 using Ret_except_t3 = Ret_except<void, int>;
 
+class B {
+public:
+    using Ret_except_t = Ret_except_t2;
+    B(Ret_except_t &e);
+};
+
 int main(int argc, char* argv[])
 {
     static_assert(std::is_constructible_v<A, Ret_except_detector_t>);
+
     static_assert(std::is_same_v<glue_ret_except_t<Ret_except_t3, Ret_except_t2>, Ret_except_t1>);
     static_assert(std::is_same_v<glue_ret_except_t<Ret_except<int, int>, Ret_except_t2>, 
                                  Ret_except<int, int, void*>>);
+
+    static_assert(std::is_same_v<glue_ret_except_from_t<A, Ret_except_t2>, Ret_except_t2>);
+    static_assert(std::is_same_v<glue_ret_except_from_t<B, Ret_except_t3>, Ret_except_t1>);
 
     // cp ctor from other Ret_except
     try {
