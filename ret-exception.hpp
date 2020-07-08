@@ -208,6 +208,15 @@ public:
         v.template emplace<Ret>(std::forward<Args>(args)...);
     }
 
+    bool has_exception_set() const noexcept
+    {
+        return has_exception;
+    }
+    bool has_exception_handled() const noexcept
+    {
+        return is_exception_handled;
+    }
+
     /**
      * Example:
      *     auto g() -> Ret_except<void, PageNotFound, std::runtime_error, std::invalid_argument>;
