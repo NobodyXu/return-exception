@@ -11,6 +11,9 @@
 #  include <cstdio>
 # endif
 
+template <class Ret, class ...Ts>
+class Ret_except;
+
 namespace ret_exception::impl {
 template <class T>
 constexpr auto type_name() -> const char*
@@ -35,7 +38,19 @@ static constexpr bool is_nothrow_constructible() noexcept
     else
         return std::is_nothrow_constructible_v<decay_T, T>;
 }
+
+template <class Ret_except_t1, class Ret_except_t2>
+class glue_ret_except;
+
+template <class Ret1, class ...Ts, class Ret2, class ...Tps>
+class glue_ret_except<Ret_except<Ret1, Ts...>, Ret_except<Ret2, Tps...>> {
+public:
+    using type = Ret_except<Ret1, Ts..., Tps...>;
+};
 } /* namespace ret_exception::impl */
+
+template <class Ret_except_t1, class Ret_except_t2>
+using glue_ret_except_t = typename ret_exception::impl::glue_ret_except<Ret_except_t1, Ret_except_t2>::type;
 
 /**
  * Ret_except forces the exception returned to be handled, otherwise it would be
