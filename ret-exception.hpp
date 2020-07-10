@@ -193,8 +193,9 @@ public:
     template <class T, class ...Args, 
               class = std::enable_if_t<holds_exp_v<T> && std::is_constructible_v<T, Args...>>>
     void set_exception(Args &&...args)
-        noexcept(std::is_nothrow_constructible_v<T, Args...>)
     {
+        throw_if_hold_exp();
+
         is_exception_handled = 0;
         has_exception = 1;
         v.template emplace<T>(std::forward<Args>(args)...);
@@ -203,8 +204,9 @@ public:
     template <class ...Args, 
               class = std::enable_if_t<std::is_constructible_v<Ret, Args...>>>
     void set_return_value(Args &&...args)
-        noexcept(std::is_nothrow_constructible_v<Ret, Args...>)
     {
+        throw_if_hold_exp();
+
         has_exception = 0;
         v.template emplace<Ret>(std::forward<Args>(args)...);
     }
