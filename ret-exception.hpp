@@ -293,6 +293,34 @@ public:
         return std::get<Ret>(std::move(v));
     }
 
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    operator T&() &
+    {
+        throw_if_hold_exp();
+        return std::get<Ret>(v);
+    }
+
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    operator const T&() const &
+    {
+        throw_if_hold_exp();
+        return std::get<Ret>(v);
+    }
+
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    operator T&&() &&
+    {
+        throw_if_hold_exp();
+        return std::get<Ret>(std::move(v));
+    }
+
+    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    operator const T&&() const &&
+    {
+        throw_if_hold_exp();
+        return std::get<Ret>(std::move(v));
+    }
+
     ~Ret_except() noexcept(false)
     {
         throw_if_hold_exp();

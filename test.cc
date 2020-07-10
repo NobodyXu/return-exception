@@ -124,5 +124,13 @@ int main(int argc, char* argv[])
         assert(false);
     }
 
+    // Test ctor return value + implict convertion to Ret
+    try {
+        Ret_except<int, char> r{-1};
+        assert(int{r} == -1);
+    } catch (...) {
+        assert(false);
+    }
+
     return 0;
 }
