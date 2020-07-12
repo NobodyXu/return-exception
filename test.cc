@@ -1,6 +1,11 @@
 #include "ret-exception.hpp"
 #include <cassert>
 
+template <class Integer>
+struct Wrapper {
+    Integer integer{0};
+};
+
 int main(int argc, char* argv[])
 {
     // Test ctor inplace exception + catching exception
@@ -117,9 +122,8 @@ int main(int argc, char* argv[])
 
     // Test default ctor + get_return_value
     try {
-        Ret_except<char, int> r{};
-        assert(r.get_return_value() == 'c');
-    } catch (const std::bad_variant_access &e) {
+        Ret_except<Wrapper<char>, int> r{};
+        assert(r.get_return_value().integer == '\0');
     } catch (...) {
         assert(false);
     }

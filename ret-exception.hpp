@@ -78,9 +78,7 @@ class Ret_except {
     bool is_exception_handled = 0;
     bool has_exception = 0;
 
-    using variant_t = std::conditional_t<std::is_void_v<Ret>, 
-                                         std::variant<std::monostate, Ts...>,
-                                         std::variant<std::monostate, Ret, Ts...>>;
+    using variant_t = std::variant<std::conditional_t<std::is_void_v<Ret>, std::monostate, Ret>, Ts...>;
     variant_t v;
 
     template <class T>
@@ -132,6 +130,10 @@ class Ret_except {
     }
 
 public:
+    /**
+     * If Ret != void, default initializae Ret;
+     * Else, construct empty Ret_except that contain no exception.
+     */
     Ret_except() = default;
 
     template <class T, class decay_T = std::decay_t<T>, 
