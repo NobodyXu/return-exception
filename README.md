@@ -73,4 +73,4 @@ If you run the compiler again with
 `clang++ -std=c++17 -O3 -flto -Wl,--strip-all -fno-exceptions -fno-rtti example.cc`, you would probably find
 the executable to be even smaller.
 
-On my machine, I found it to be merely 8.9K, which definitely is not possible with exceptions on.
+On my machine, I found it to be merely 8.9K, which definitely is not possible with c++ exceptions.
