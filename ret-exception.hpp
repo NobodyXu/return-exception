@@ -78,7 +78,9 @@ class Ret_except {
     bool is_exception_handled = 0;
     bool has_exception = 0;
 
-    using variant_t = std::variant<std::conditional_t<std::is_void_v<Ret>, std::monostate, Ret>, Ts...>;
+    using variant_t = std::conditional_t<std::is_void_v<Ret>, 
+                                         std::variant<std::monostate, Ts...>,
+                                         std::variant<Ret, std::monostate, Ts...>>;
     variant_t v;
 
     template <class T>
@@ -163,13 +165,15 @@ public:
      */
     template <class Ret_t2, class ...Tps>
     Ret_except(Ret_except<Ret_t2, Tps...> &r)
-        noexcept(noexcept(r.Catch(Matcher{*this})))
+        noexcept(noexcept(r.Catch(Matcher{*this}))):
+            v{std::monostate{}}
     {
         r.Catch(Matcher{*this});
     }
     template <class Ret_t2, class ...Tps>
     Ret_except(Ret_except<Ret_t2, Tps...> &&r)
-        noexcept(noexcept(std::declval<Ret_except<Ret_t2, Tps...>&&>().Catch(Matcher{*this})))
+        noexcept(noexcept(std::declval<Ret_except<Ret_t2, Tps...>&&>().Catch(Matcher{*this}))):
+            v{std::monostate{}}
     {
         std::forward<Ret_except<Ret_t2, Tps...>>(r).Catch(Matcher{*this});
     }
