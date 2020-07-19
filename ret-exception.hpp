@@ -44,19 +44,19 @@ struct holds_alternative_t<std::variant> {
 template <class decay_T, class T>
 static constexpr bool is_constructible() noexcept
 {
-    if constexpr(std::is_pointer_v<decay_T>)
+    if constexpr(std::is_pointer<decay_T>::value)
         return true;
     else
-        return std::is_constructible_v<decay_T, T>;
+        return std::is_constructible<decay_T, T>::value;
 }
 
 template <class decay_T, class T>
 static constexpr bool is_nothrow_constructible() noexcept
 {
-    if constexpr(std::is_pointer_v<decay_T>)
+    if constexpr(std::is_pointer<decay_T>::value)
         return true;
     else
-        return std::is_nothrow_constructible_v<decay_T, T>;
+        return std::is_nothrow_constructible<decay_T, T>::value;
 }
 
 template <class Ret_except_t1, class Ret_except_t2>
@@ -72,15 +72,18 @@ public:
     using type = Ret_except_t<variant1, in_place_type_t1, Ret1, Ts..., Tp...>;
 };
 
+template <class ...>
+using void_t = void;
+
 // primary template handles types that have no nested ::Ret_except_t member:
-template <class T, class Ret_except_t, class = std::void_t<>>
+template <class T, class Ret_except_t, class = void_t<>>
 struct glue_ret_except_from {
     using type = Ret_except_t;
 };
  
 // specialization recognizes types that do have a nested ::Ret_except_t member:
 template <class T, class Ret_except_t>
-struct glue_ret_except_from<T, Ret_except_t, std::void_t<typename T::Ret_except_t>>:
+struct glue_ret_except_from<T, Ret_except_t, void_t<typename T::Ret_except_t>>:
     public glue_ret_except<Ret_except_t, typename T::Ret_except_t>
 {};
 } /* namespace ret_exception::impl */
@@ -113,16 +116,16 @@ class Ret_except_t {
 
     using monostate = ret_exception::impl::monostate;
 
-    using variant_t = std::conditional_t<std::is_void_v<Ret>, 
-                                         variant<monostate, Ts...>,
-                                         variant<Ret, monostate, Ts...>>;
+    using variant_t = typename std::conditional<std::is_void<Ret>::value, 
+                                                variant<monostate, Ts...>,
+                                                variant<Ret, monostate, Ts...>>::type;
     variant_t v;
 
     template <class T>
-    static constexpr bool holds_exp_v = (std::is_same_v<T, Ts> || ...);
+    static constexpr bool holds_exp_v = (std::is_same<T, Ts>::value || ...);
 
     template <class T>
-    static constexpr bool holds_type_v = std::is_same_v<T, Ret> || holds_exp_v<T>;
+    static constexpr bool holds_type_v = std::is_same<T, Ret>::value || holds_exp_v<T>;
 
     struct Matcher {
         Ret_except_t &r;
@@ -142,7 +145,8 @@ class Ret_except_t {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
             visit([this](auto &&e) {
                 using Exception_t = std::decay_t<decltype(e)>;
-                if constexpr(!std::is_same_v<Exception_t, Ret> && !std::is_same_v<Exception_t, monostate>) {
+                if constexpr(!std::is_same<Exception_t, Ret>::value && 
+                             !std::is_same<Exception_t, monostate>::value) {
                     is_exception_handled = 1;
 
 # if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
@@ -150,12 +154,12 @@ class Ret_except_t {
 # else
                     std::fprintf(stderr, "[Exception%s ", ret_exception::impl::type_name<Exception_t>());
 
-                    if constexpr(std::is_base_of_v<std::exception, Exception_t>)
+                    if constexpr(std::is_base_of<std::exception, Exception_t>::value)
                         errx(1, "%s", e.what());
-                    else if constexpr(std::is_pointer_v<Exception_t>)
+                    else if constexpr(std::is_pointer<Exception_t>::value)
                         errx(1, "%p", e);
-                    else if constexpr(std::is_integral_v<Exception_t>) {
-                        if constexpr(std::is_unsigned_v<Exception_t>)
+                    else if constexpr(std::is_integral<Exception_t>::value) {
+                        if constexpr(std::is_unsigned<Exception_t>::value)
                             errx(1, "%llu", static_cast<unsigned long long>(e));
                         else
                             errx(1, "%lld", static_cast<long long>(e));
@@ -178,15 +182,15 @@ public:
                       ret_exception::impl::is_constructible<decay_T, T>()>>
     Ret_except_t(T &&obj)
         noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>()):
-            has_exception{!std::is_same_v<decay_T, Ret>}, 
+            has_exception{!std::is_same<decay_T, Ret>::value},
             v{std::in_place_type<decay_T>, std::forward<T>(obj)}
     {}
 
     template <class T, class ...Args, 
-              class = std::enable_if_t<holds_type_v<T> && std::is_constructible_v<T, Args...>>>
+              class = std::enable_if_t<holds_type_v<T> && std::is_constructible<T, Args...>::value>>
     Ret_except_t(in_place_type_t<T> type, Args &&...args)
-        noexcept(std::is_nothrow_constructible_v<T, Args...>):
-            has_exception{!std::is_same_v<T, Ret>}, 
+        noexcept(std::is_nothrow_constructible<T, Args...>::value):
+            has_exception{!std::is_same<T, Ret>::value}, 
             v{type, std::forward<Args>(args)...}
     {}
 
@@ -234,7 +238,7 @@ public:
     Ret_except_t& operator = (Ret_except_t&&) = delete;
 
     template <class T, class ...Args, 
-              class = std::enable_if_t<holds_exp_v<T> && std::is_constructible_v<T, Args...>>>
+              class = std::enable_if_t<holds_exp_v<T> && std::is_constructible<T, Args...>::value>>
     void set_exception(Args &&...args)
     {
         throw_if_hold_exp();
@@ -245,7 +249,7 @@ public:
     }
 
     template <class ...Args, 
-              class = std::enable_if_t<std::is_constructible_v<Ret, Args...>>>
+              class = std::enable_if_t<std::is_constructible<Ret, Args...>::value>>
     void set_return_value(Args &&...args)
     {
         throw_if_hold_exp();
@@ -288,8 +292,8 @@ public:
             visit([&, this](auto &&e) {
                 using Exception_t = std::decay_t<decltype(e)>;
 
-                if constexpr(!std::is_same_v<Exception_t, monostate> && !std::is_same_v<Exception_t, Ret>)
-                    if constexpr(std::is_invocable_v<std::decay_t<F>, Exception_t>) {
+                if constexpr(!std::is_same<Exception_t, monostate>::value && !std::is_same<Exception_t, Ret>::value)
+                    if constexpr(std::is_invocable<std::decay_t<F>, Exception_t>::value) {
                         is_exception_handled = 1;
                         std::invoke(std::forward<F>(f), std::forward<decltype(e)>(e));
                     }
