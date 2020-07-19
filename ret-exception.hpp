@@ -104,7 +104,7 @@ using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_fro
  *    provides holds_alternative_t<variant>::holds_alternative_f, which should
  *    has the same API as std::holds_alternative.
  *  - override std::get for you type
- * @tparam Ts... must not be std::monostate, void or the same type as Ret.
+ * @tparam Ts... must not be void or the same type as Ret or has duplicated types.
  */
 template <template <typename...> class variant, template <class> class in_place_type_t, 
           class Ret, class ...Ts>
