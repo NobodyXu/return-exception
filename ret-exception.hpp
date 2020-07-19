@@ -232,7 +232,7 @@ public:
      * move constructor is required as NRVO isn't guaranteed to happen.
      */
     Ret_except_t(Ret_except_t &&other) 
-        noexcept(std::is_nothrow_move_constructible_v<variant_t>):
+        noexcept(std::is_nothrow_move_constructible<variant_t>::value):
             is_exception_handled{other.is_exception_handled},
             has_exception{other.has_exception},
             v{std::move(other.v)}
