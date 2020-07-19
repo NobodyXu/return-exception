@@ -2,6 +2,8 @@
 
 Return errors in an unignorable way and have compile-time only Catch, which produces no bloat code with `CXXFLAGS=-O2 -Wl,--strip-all`.
 
+[Document]
+
 ## Advantage compared to C++ exception
 
  - Pay for what you use -- only when you use a specific feature will that code be generated.
@@ -22,6 +24,8 @@ Return errors in an unignorable way and have compile-time only Catch, which prod
  - Since all possible exception type is explicit, it poses a big problem in template code:
  <br>You would have to use detect return type of function and use `glue_ret_except_from_t` to add more
  exceptions.
+
+For more information, check [Document].
 
 ## Usage
 
@@ -95,3 +99,7 @@ If you run the compiler again with
 the executable to be even smaller.
 
 On my machine, I found it to be merely 8.9K, which definitely is not possible with c++ exceptions.
+
+For more information, check [Document].
+
+[Document]: https://nobodyxu.github.io/return-exception/
