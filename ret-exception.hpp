@@ -88,9 +88,17 @@ struct glue_ret_except_from<T, Ret_except_t, void_t<typename T::Ret_except_t>>:
 {};
 } /* namespace ret_exception::impl */
 
+/**
+ * If Ret_except_t1 and Ret_except_t2 uses different variant impl, the result type
+ * will use the variant impl of Ret_except_t1.
+ */
 template <class Ret_except_t1, class Ret_except_t2>
 using glue_ret_except_t = typename ret_exception::impl::glue_ret_except<Ret_except_t1, Ret_except_t2>::type;
 
+/**
+ * If Ret_except_t and T::Ret_except_t uses different variant impl, the result type
+ * will use the variant impl of Ret_except_t.
+ */
 template <class T, class Ret_except_t>
 using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_from<T, Ret_except_t>::type;
 
