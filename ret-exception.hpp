@@ -14,7 +14,8 @@
 #  include <cstdio>
 # endif
 
-template <template <typename...> class variant_t, class Ret, class ...Ts>
+template <template <typename...> class variant_t, template <class> class in_place_type_t, 
+          class Ret, class ...Ts>
 class Ret_except_t;
 
 namespace ret_exception::impl {
@@ -61,11 +62,14 @@ static constexpr bool is_nothrow_constructible() noexcept
 template <class Ret_except_t1, class Ret_except_t2>
 class glue_ret_except;
 
-template <template <typename...> class variant1, class Ret1, class ...Ts, 
-          template <typename...> class variant2, class Ret2, class ...Tps>
-class glue_ret_except<Ret_except_t<variant1, Ret1, Ts...>, Ret_except_t<variant2, Ret2, Tps...>> {
+template <template <typename...> class variant1, template <class> class in_place_type_t1, 
+          class Ret1, class ...Ts,
+          template <typename...> class variant2, template <class> class in_place_type_t2, 
+          class Ret2, class ...Tp>
+class glue_ret_except<Ret_except_t<variant1, in_place_type_t1, Ret1, Ts...>, 
+                      Ret_except_t<variant2, in_place_type_t2, Ret2, Tp...>> {
 public:
-    using type = Ret_except_t<variant1, Ret1, Ts..., Tps...>;
+    using type = Ret_except_t<variant1, in_place_type_t1, Ret1, Ts..., Tp...>;
 };
 
 // primary template handles types that have no nested ::Ret_except_t member:
@@ -99,7 +103,8 @@ using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_fro
  *  - override std::get for you type
  * @tparam Ts... must not be std::monostate, void or the same type as Ret.
  */
-template <template <typename...> class variant, class Ret, class ...Ts>
+template <template <typename...> class variant, template <class> class in_place_type_t, 
+          class Ret, class ...Ts>
 class Ret_except_t {
     using holds_alternative_t = ret_exception::impl::holds_alternative_t<variant>;
 
@@ -179,7 +184,7 @@ public:
 
     template <class T, class ...Args, 
               class = std::enable_if_t<holds_type_v<T> && std::is_constructible_v<T, Args...>>>
-    Ret_except_t(std::in_place_type_t<T> type, Args &&...args)
+    Ret_except_t(in_place_type_t<T> type, Args &&...args)
         noexcept(std::is_nothrow_constructible_v<T, Args...>):
             has_exception{!std::is_same_v<T, Ret>}, 
             v{type, std::forward<Args>(args)...}
@@ -193,19 +198,21 @@ public:
      *
      * These ctors won't copy over Ret.
      */
-    template <template <typename...> class variant2, class Ret_t2, class ...Tps>
-    Ret_except_t(Ret_except_t<variant2, Ret_t2, Tps...> &r)
+    template <template <typename...> class variant2, template <class> class in_place_type_t2,
+              class Ret_t2, class ...Tps>
+    Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
         noexcept(noexcept(r.Catch(Matcher{*this}))):
             v{monostate{}}
     {
         r.Catch(Matcher{*this});
     }
-    template <template <typename...> class variant2, class Ret_t2, class ...Tps>
-    Ret_except_t(Ret_except_t<variant2, Ret_t2, Tps...> &&r)
-        noexcept(noexcept(std::declval<Ret_except_t<variant2, Ret_t2, Tps...>&&>().Catch(Matcher{*this}))):
+    template <template <typename...> class variant2, template <class> class in_place_type_t2,
+              class Ret_t2, class ...Tps>
+    Ret_except_t(Ret_except_t<variant2, in_place_type_t, Ret_t2, Tps...> &&r)
+        noexcept(noexcept(std::move(r).Catch(Matcher{*this}))):
             v{monostate{}}
     {
-        std::forward<Ret_except_t<variant2, Ret_t2, Tps...>>(r).Catch(Matcher{*this});
+        std::move(r).Catch(Matcher{*this});
     }
 
     Ret_except_t(const Ret_except_t&) = delete;
@@ -371,7 +378,7 @@ public:
 
 # if (__cplusplus >= 201703L)
 template <class Ret, class ...Ts>
-using Ret_except = Ret_except_t<std::variant, Ret, Ts...>;
+using Ret_except = Ret_except_t<std::variant, std::in_place_type_t, Ret, Ts...>;
 # endif
 
 /**
@@ -391,8 +398,9 @@ using Ret_except = Ret_except_t<std::variant, Ret, Ts...>;
  * use std::is_constructible_v<type, Ret_except_detector_t>.
  */
 struct Ret_except_detector_t {
-    template <template <typename...> class variant, class Ret, class ...Ts>
-    operator Ret_except_t<variant, Ret, Ts...>& () const noexcept;
+    template <template <typename...> class variant, template <class> class in_place_type_t, 
+              class Ret, class ...Ts>
+    operator Ret_except_t<variant, in_place_type_t, Ret, Ts...>& () const noexcept;
 };
 
 #endif
