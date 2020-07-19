@@ -91,10 +91,12 @@ using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_fro
  * Ret_except forces the exception returned to be handled, otherwise it would be
  * thrown in destructor.
  * 
- * @tparam variant must has API identical to std::variant, include ADL-lookupable visit,
- *                 and override ret_exception::impl::holds_alternative_t for variant and
- *                 provides holds_alternative_t<variant>::holds_alternative_f, which should
- *                 has the same API as std::holds_alternative.
+ * @tparam variant must has 
+ *  - API identical to std::variant, including ADL-lookupable visit,
+ *  - override ret_exception::impl::holds_alternative_t for variant and
+ *    provides holds_alternative_t<variant>::holds_alternative_f, which should
+ *    has the same API as std::holds_alternative.
+ *  - override std::get for you type
  * @tparam Ts... must not be std::monostate, void or the same type as Ret.
  */
 template <template <typename...> class variant, class Ret, class ...Ts>
