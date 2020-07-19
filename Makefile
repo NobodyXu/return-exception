@@ -12,5 +12,5 @@ test2: test2.cc ret-exception.hpp
 	(./$@ && exit 1) || exit 0
 
 clean:
-	rm -f test test2
+	rm -f test test2 test3
 .PHONY: clean all
