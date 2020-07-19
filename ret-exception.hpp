@@ -196,6 +196,10 @@ public:
      */
     Ret_except_t() = default;
 
+    /**
+     * @tparam T must be in Ts...
+     * Copy construct or move construct type T.
+     */
     template <class T, class decay_T = typename std::decay<T>::type,
               class = typename std::enable_if<holds_type<decay_T>() && 
                                               ret_exception::impl::is_constructible<decay_T, T>()>::type>
@@ -205,6 +209,10 @@ public:
             v{in_place_type_t<decay_T>{}, std::forward<T>(obj)}
     {}
 
+    /**
+     * @tparam T must be in Ts...
+     * In place construct type T
+     */
     template <class T, class ...Args, 
               class = typename std::enable_if<holds_type<T>() && 
                                               std::is_constructible<T, Args...>::value>::type>
@@ -215,12 +223,10 @@ public:
     {}
 
     /**
-     * Suppose r.v currently holds exception E.
-     *
-     * The 2 ctors below would only cp/mv the variable held by r.v only if
+     * This ctor would only cp/mv the exceptions of type E held by r only if
      * E is also in Ts...
      *
-     * These ctors won't copy over Ret.
+     * It won't copy Ret.
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
@@ -230,6 +236,13 @@ public:
     {
         r.Catch(Matcher{*this});
     }
+
+    /**
+     * This ctor would only cp/mv the exceptions of type E held by r only if
+     * E is also in Ts...
+     *
+     * It won't copy Ret.
+     */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
     Ret_except_t(Ret_except_t<variant2, in_place_type_t, Ret_t2, Tps...> &&r)
@@ -257,6 +270,12 @@ public:
     Ret_except_t& operator = (const Ret_except_t&) = delete;
     Ret_except_t& operator = (Ret_except_t&&) = delete;
 
+    /**
+     * Replace the previous value with exception.
+     *
+     * If an exception is contained in this object and it is not handled when this function
+     * is called, this would cause the program to terminate.
+     */
     template <class T, class ...Args, 
               class = typename std::enable_if<holds_exp<T>() && std::is_constructible<T, Args...>::value>::type>
     void set_exception(Args &&...args)
@@ -268,6 +287,12 @@ public:
         v.template emplace<T>(std::forward<Args>(args)...);
     }
 
+    /**
+     * Replace the previous value with return value.
+     *
+     * If an exception is contained in this object and it is not handled when this function
+     * is called, this would cause the program to terminate.
+     */
     template <class ...Args, 
               class = typename std::enable_if<std::is_constructible<Ret, Args...>::value>::type>
     void set_return_value(Args &&...args)
@@ -287,6 +312,9 @@ public:
         return is_exception_handled;
     }
 
+    /**
+     * Test whether this object contain exception of type T.
+     */
     template <class T>
     bool has_exception_type() const noexcept
     {
@@ -294,6 +322,8 @@ public:
     }
 
     /**
+     * Catch and handle the exception.
+     *
      * Example:
      *     auto g() -> Ret_except<void, PageNotFound, std::runtime_error, std::invalid_argument>;
      *     void f()
@@ -324,6 +354,11 @@ public:
     }
 
     /**
+     * Get the return value.
+     *
+     * If an exception is contained in this object and it is not handled when this function
+     * is called, this would cause the program to terminate.
+     *
      * Example:
      *     auto g() -> Ret_except<std::string, PageNotFound, std::runtime_error, std::invalid_argument>;
      *     void f()
@@ -346,6 +381,12 @@ public:
         return variant_nonmem_f_t::template get<Ret>(v);
     }
 
+    /**
+     * Get the return value.
+     *
+     * If an exception is contained in this object and it is not handled when this function
+     * is called, this would cause the program to terminate.
+     */
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto& get_return_value() const &
     {
@@ -367,6 +408,12 @@ public:
         return variant_nonmem_f_t::template get<Ret>(std::move(v));
     }
 
+    /**
+     * Get the return value.
+     *
+     * If an exception is contained in this object and it is not handled when this function
+     * is called, this would cause the program to terminate.
+     */
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator T&() &
     {
@@ -395,6 +442,10 @@ public:
         return variant_nonmem_f_t::template get<Ret>(std::move(v));
     }
 
+    /**
+     * If an exception is contained in this object and it is not handled when dtor
+     * is called, this would cause the program to terminate.
+     */
     ~Ret_except_t() noexcept(false)
     {
         throw_if_hold_exp();
