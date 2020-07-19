@@ -183,7 +183,7 @@ public:
     Ret_except_t(T &&obj)
         noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>()):
             has_exception{!std::is_same<decay_T, Ret>::value},
-            v{std::in_place_type<decay_T>, std::forward<T>(obj)}
+            v{in_place_type_t<decay_T>{}, std::forward<T>(obj)}
     {}
 
     template <class T, class ...Args, 
