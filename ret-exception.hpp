@@ -388,6 +388,9 @@ public:
 };
 
 # if (__cplusplus >= 201703L)
+/**
+ * Ret_except is only present when -std=c++17.
+ */
 template <class Ret, class ...Ts>
 using Ret_except = Ret_except_t<std::variant, std::in_place_type_t, Ret, Ts...>;
 # endif
