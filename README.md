@@ -5,8 +5,10 @@ Return errors in an unignorable way and have compile-time only Catch, which prod
 ## Advantage compared to C++ exception
 
  - Pay for what you use -- only when you use a specific feature will that code be generated.
- - No rtti is required -- variant is used for minimal runtime check per-`Ret_except`, only generate
+ - No rtti is required -- `variant` is used for minimal runtime check per-`Ret_except`, only generate
  when required and will not add a lot of global information.
+ - You can use any `variant` implementation in `Ret_except`, giving you further control of the 
+ generated code.
  - All generated code will undergo optimizer, which can heavily optimize to remove any bloat code with 
  `CXXFLAGS=-O2 -Wl,--strip-all`.
  - More explicit syntax: `Ret_except` requires all possible exception type to be provided at compile-time.
