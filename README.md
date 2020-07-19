@@ -9,6 +9,9 @@ Return errors in an unignorable way and have compile-time only Catch, which prod
  when required and will not add a lot of global information.
  - All generated code will undergo optimizer, which can heavily optimize to remove any bloat code with `CXXFLAGS=-O2 -Wl,--strip-all`.
  - More explicit syntax: `Ret_except` requires all possible exception type to be provided at compile-time.
+ - If you don't handle the exception stored in `Ret_except`, then it will terminate your program by
+   - Calling `errx` and print `e.what()` (if `e.what()` is valid) if exception is disabled.
+   - Otherwise, throw exception again.
 
 ## Usage
 
