@@ -122,16 +122,22 @@ class Ret_except_t {
     variant_t v;
 
     template <class T>
-    static constexpr bool holds_exp_v = (std::is_same<T, Ts>::value || ...);
+    static constexpr bool holds_exp() noexcept
+    {
+        return (std::is_same<T, Ts>::value || ...);
+    }
 
     template <class T>
-    static constexpr bool holds_type_v = std::is_same<T, Ret>::value || holds_exp_v<T>;
+    static constexpr bool holds_type() noexcept
+    {
+        return std::is_same<T, Ret>::value || holds_exp<T>();
+    }
 
     struct Matcher {
         Ret_except_t &r;
     
         template <class T, class decay_T = std::decay_t<T>,
-                  class = std::enable_if_t<holds_exp_v<decay_T> && 
+                  class = std::enable_if_t<holds_exp<decay_T>() && 
                           ret_exception::impl::is_constructible<decay_T, T>()>>
         void operator () (T &&obj)
             noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>())
@@ -178,7 +184,7 @@ public:
     Ret_except_t() = default;
 
     template <class T, class decay_T = std::decay_t<T>, 
-              class = std::enable_if_t<holds_type_v<decay_T> && 
+              class = std::enable_if_t<holds_type<decay_T>() && 
                       ret_exception::impl::is_constructible<decay_T, T>()>>
     Ret_except_t(T &&obj)
         noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>()):
@@ -187,7 +193,7 @@ public:
     {}
 
     template <class T, class ...Args, 
-              class = std::enable_if_t<holds_type_v<T> && std::is_constructible<T, Args...>::value>>
+              class = std::enable_if_t<holds_type<T>() && std::is_constructible<T, Args...>::value>>
     Ret_except_t(in_place_type_t<T> type, Args &&...args)
         noexcept(std::is_nothrow_constructible<T, Args...>::value):
             has_exception{!std::is_same<T, Ret>::value}, 
@@ -238,7 +244,7 @@ public:
     Ret_except_t& operator = (Ret_except_t&&) = delete;
 
     template <class T, class ...Args, 
-              class = std::enable_if_t<holds_exp_v<T> && std::is_constructible<T, Args...>::value>>
+              class = std::enable_if_t<holds_exp<T>() && std::is_constructible<T, Args...>::value>>
     void set_exception(Args &&...args)
     {
         throw_if_hold_exp();
