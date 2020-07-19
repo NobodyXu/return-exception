@@ -324,6 +324,8 @@ public:
     /**
      * Catch and handle the exception.
      *
+     * @post has_exception_set() == true, has_exception_handled() == true
+     *
      * Example:
      *     auto g() -> Ret_except<void, PageNotFound, std::runtime_error, std::invalid_argument>;
      *     void f()
