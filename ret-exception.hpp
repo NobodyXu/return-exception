@@ -325,7 +325,7 @@ public:
      *         std::cout << s << std::endl;
      *     }
      */
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto& get_return_value() &
     {
         throw_if_hold_exp();
@@ -339,42 +339,42 @@ public:
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto&& get_return_value() &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto&& get_return_value() const &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator T&() &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator const T&() const &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator T&&() &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator const T&&() const &&
     {
         throw_if_hold_exp();
