@@ -16,11 +16,11 @@ Return errors in an unignorable way and have compile-time only Catch, which prod
    - Calling `errx` and print `e.what()` (if `e.what()` is valid) if exception is disabled.
    - Otherwise, throw exception again.
 
-## Downsies compared to C++ exceptions
+## Downsides compared to C++ exceptions
 
  - Hard or impossible to use in constructor.
  - Since all possible exception type is explicit, it poses a big problem in template code:
- <br>You would have to use typedefs in passed tparam class + `glue_ret_except_from_t` to add more
+ <br>You would have to use detect return type of function and use `glue_ret_except_from_t` to add more
  exceptions.
 
 ## Usage
