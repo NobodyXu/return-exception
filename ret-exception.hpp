@@ -221,7 +221,7 @@ public:
               class Ret_t2, class ...Tps>
     Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
         noexcept(noexcept(r.Catch(Matcher{*this}))):
-            v{monostate{}}
+            v{in_place_type_t<monostate>{}}
     {
         r.Catch(Matcher{*this});
     }
@@ -229,7 +229,7 @@ public:
               class Ret_t2, class ...Tps>
     Ret_except_t(Ret_except_t<variant2, in_place_type_t, Ret_t2, Tps...> &&r)
         noexcept(noexcept(std::move(r).Catch(Matcher{*this}))):
-            v{monostate{}}
+            v{in_place_type_t<monostate>{}}
     {
         std::move(r).Catch(Matcher{*this});
     }
