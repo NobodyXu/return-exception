@@ -1,25 +1,44 @@
 #ifndef  __return_exception_HPP__
 # define __return_exception_HPP__
 
-# include <variant>
 # include <functional>
 # include <utility>
 # include <type_traits>
+
+# if (__cplusplus >= 201703L)
+#  include <variant>
+# endif
 
 # if !defined(__EXCEPTIONS) || !defined(__cpp_exceptions)
 #  include <err.h>
 #  include <cstdio>
 # endif
 
-template <class Ret, class ...Ts>
-class Ret_except;
+template <template <typename...> class variant_t, class Ret, class ...Ts>
+class Ret_except_t;
 
 namespace ret_exception::impl {
+struct monostate {};
+
 template <class T>
 constexpr auto type_name() -> const char*
 {
     return __PRETTY_FUNCTION__ + 49;
 }
+
+template <template <typename...> class variant>
+struct holds_alternative_t {};
+
+# if (__cplusplus >= 201703L)
+template <>
+struct holds_alternative_t<std::variant> {
+    template <class T, class ...Types>
+    static constexpr bool holds_alternative_f(const std::variant<Types...> &v) noexcept
+    {
+        return std::holds_alternative<T>(v);
+    }
+};
+# endif
 
 template <class decay_T, class T>
 static constexpr bool is_constructible() noexcept
@@ -42,10 +61,11 @@ static constexpr bool is_nothrow_constructible() noexcept
 template <class Ret_except_t1, class Ret_except_t2>
 class glue_ret_except;
 
-template <class Ret1, class ...Ts, class Ret2, class ...Tps>
-class glue_ret_except<Ret_except<Ret1, Ts...>, Ret_except<Ret2, Tps...>> {
+template <template <typename...> class variant1, class Ret1, class ...Ts, 
+          template <typename...> class variant2, class Ret2, class ...Tps>
+class glue_ret_except<Ret_except_t<variant1, Ret1, Ts...>, Ret_except_t<variant2, Ret2, Tps...>> {
 public:
-    using type = Ret_except<Ret1, Ts..., Tps...>;
+    using type = Ret_except_t<variant1, Ret1, Ts..., Tps...>;
 };
 
 // primary template handles types that have no nested ::Ret_except_t member:
@@ -71,16 +91,24 @@ using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_fro
  * Ret_except forces the exception returned to be handled, otherwise it would be
  * thrown in destructor.
  * 
- * Ts... must not be std::monostate, void or the same type as Ret.
+ * @tparam variant must has API identical to std::variant, include ADL-lookupable visit,
+ *                 and override ret_exception::impl::holds_alternative_t for variant and
+ *                 provides holds_alternative_t<variant>::holds_alternative_f, which should
+ *                 has the same API as std::holds_alternative.
+ * @tparam Ts... must not be std::monostate, void or the same type as Ret.
  */
-template <class Ret, class ...Ts>
-class Ret_except {
+template <template <typename...> class variant, class Ret, class ...Ts>
+class Ret_except_t {
+    using holds_alternative_t = ret_exception::impl::holds_alternative_t<variant>;
+
     bool is_exception_handled = 0;
     bool has_exception = 0;
 
+    using monostate = ret_exception::impl::monostate;
+
     using variant_t = std::conditional_t<std::is_void_v<Ret>, 
-                                         std::variant<std::monostate, Ts...>,
-                                         std::variant<Ret, std::monostate, Ts...>>;
+                                         variant<monostate, Ts...>,
+                                         variant<Ret, monostate, Ts...>>;
     variant_t v;
 
     template <class T>
@@ -90,7 +118,7 @@ class Ret_except {
     static constexpr bool holds_type_v = std::is_same_v<T, Ret> || holds_exp_v<T>;
 
     struct Matcher {
-        Ret_except &r;
+        Ret_except_t &r;
     
         template <class T, class decay_T = std::decay_t<T>,
                   class = std::enable_if_t<holds_exp_v<decay_T> && 
@@ -105,9 +133,9 @@ class Ret_except {
     void throw_if_hold_exp()
     {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
-            std::visit([this](auto &&e) {
+            visit([this](auto &&e) {
                 using Exception_t = std::decay_t<decltype(e)>;
-                if constexpr(!std::is_same_v<Exception_t, Ret> && !std::is_same_v<Exception_t, std::monostate>) {
+                if constexpr(!std::is_same_v<Exception_t, Ret> && !std::is_same_v<Exception_t, monostate>) {
                     is_exception_handled = 1;
 
 # if defined(__EXCEPTIONS) || defined(__cpp_exceptions)
@@ -136,12 +164,12 @@ public:
      * If Ret != void, default initializae Ret;
      * Else, construct empty Ret_except that contain no exception.
      */
-    Ret_except() = default;
+    Ret_except_t() = default;
 
     template <class T, class decay_T = std::decay_t<T>, 
               class = std::enable_if_t<holds_type_v<decay_T> && 
                       ret_exception::impl::is_constructible<decay_T, T>()>>
-    Ret_except(T &&obj)
+    Ret_except_t(T &&obj)
         noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>()):
             has_exception{!std::is_same_v<decay_T, Ret>}, 
             v{std::in_place_type<decay_T>, std::forward<T>(obj)}
@@ -149,7 +177,7 @@ public:
 
     template <class T, class ...Args, 
               class = std::enable_if_t<holds_type_v<T> && std::is_constructible_v<T, Args...>>>
-    Ret_except(std::in_place_type_t<T> type, Args &&...args)
+    Ret_except_t(std::in_place_type_t<T> type, Args &&...args)
         noexcept(std::is_nothrow_constructible_v<T, Args...>):
             has_exception{!std::is_same_v<T, Ret>}, 
             v{type, std::forward<Args>(args)...}
@@ -163,38 +191,38 @@ public:
      *
      * These ctors won't copy over Ret.
      */
-    template <class Ret_t2, class ...Tps>
-    Ret_except(Ret_except<Ret_t2, Tps...> &r)
+    template <template <typename...> class variant2, class Ret_t2, class ...Tps>
+    Ret_except_t(Ret_except_t<variant2, Ret_t2, Tps...> &r)
         noexcept(noexcept(r.Catch(Matcher{*this}))):
-            v{std::monostate{}}
+            v{monostate{}}
     {
         r.Catch(Matcher{*this});
     }
-    template <class Ret_t2, class ...Tps>
-    Ret_except(Ret_except<Ret_t2, Tps...> &&r)
-        noexcept(noexcept(std::declval<Ret_except<Ret_t2, Tps...>&&>().Catch(Matcher{*this}))):
-            v{std::monostate{}}
+    template <template <typename...> class variant2, class Ret_t2, class ...Tps>
+    Ret_except_t(Ret_except_t<variant2, Ret_t2, Tps...> &&r)
+        noexcept(noexcept(std::declval<Ret_except_t<variant2, Ret_t2, Tps...>&&>().Catch(Matcher{*this}))):
+            v{monostate{}}
     {
-        std::forward<Ret_except<Ret_t2, Tps...>>(r).Catch(Matcher{*this});
+        std::forward<Ret_except_t<variant2, Ret_t2, Tps...>>(r).Catch(Matcher{*this});
     }
 
-    Ret_except(const Ret_except&) = delete;
+    Ret_except_t(const Ret_except_t&) = delete;
 
     /**
      * move constructor is required as NRVO isn't guaranteed to happen.
      */
-    Ret_except(Ret_except &&other) 
+    Ret_except_t(Ret_except_t &&other) 
         noexcept(std::is_nothrow_move_constructible_v<variant_t>):
             is_exception_handled{other.is_exception_handled},
             has_exception{other.has_exception},
             v{std::move(other.v)}
     {
         other.has_exception = 0;
-        other.v.template emplace<std::monostate>();
+        other.v.template emplace<monostate>();
     }
 
-    Ret_except& operator = (const Ret_except&) = delete;
-    Ret_except& operator = (Ret_except&&) = delete;
+    Ret_except_t& operator = (const Ret_except_t&) = delete;
+    Ret_except_t& operator = (Ret_except_t&&) = delete;
 
     template <class T, class ...Args, 
               class = std::enable_if_t<holds_exp_v<T> && std::is_constructible_v<T, Args...>>>
@@ -226,10 +254,10 @@ public:
         return is_exception_handled;
     }
 
-    template <class Type>
+    template <class T>
     bool has_exception_type() const noexcept
     {
-        return std::holds_alternative<Type>(v);
+        return holds_alternative_t::template holds_alternative_f<T>(v);
     }
 
     /**
@@ -245,13 +273,13 @@ public:
      *     }
      */
     template <class F>
-    auto Catch(F &&f) -> Ret_except&
+    auto Catch(F &&f) -> Ret_except_t&
     {
        if (has_exception && !is_exception_handled && !v.valueless_by_exception())
-            std::visit([&, this](auto &&e) {
+            visit([&, this](auto &&e) {
                 using Exception_t = std::decay_t<decltype(e)>;
 
-                if constexpr(!std::is_same_v<Exception_t, std::monostate> && !std::is_same_v<Exception_t, Ret>)
+                if constexpr(!std::is_same_v<Exception_t, monostate> && !std::is_same_v<Exception_t, Ret>)
                     if constexpr(std::is_invocable_v<std::decay_t<F>, Exception_t>) {
                         is_exception_handled = 1;
                         std::invoke(std::forward<F>(f), std::forward<decltype(e)>(e));
@@ -333,11 +361,16 @@ public:
         return std::get<Ret>(std::move(v));
     }
 
-    ~Ret_except() noexcept(false)
+    ~Ret_except_t() noexcept(false)
     {
         throw_if_hold_exp();
     }
 };
+
+# if (__cplusplus >= 201703L)
+template <class Ret, class ...Ts>
+using Ret_except = Ret_except_t<std::variant, Ret, Ts...>;
+# endif
 
 /**
  * Example usage:
@@ -356,8 +389,8 @@ public:
  * use std::is_constructible_v<type, Ret_except_detector_t>.
  */
 struct Ret_except_detector_t {
-    template <class Ret, class ...Ts>
-    operator Ret_except<Ret, Ts...>& () const noexcept;
+    template <template <typename...> class variant, class Ret, class ...Ts>
+    operator Ret_except_t<variant, Ret, Ts...>& () const noexcept;
 };
 
 #endif
