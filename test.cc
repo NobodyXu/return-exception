@@ -12,6 +12,8 @@ int main(int argc, char* argv[])
     try {
         Ret_except<char, int, long, void*> r{std::in_place_type<int>, -1};
 
+        assert(r.has_exception_type<int>());
+
         bool is_visited = false;
         r.Catch([](void *p) {
             assert(false);
@@ -30,6 +32,8 @@ int main(int argc, char* argv[])
     // Test ctor inplace exception + catch-all
     try {
         Ret_except<char, int, long, void*> r{std::in_place_type<int>, -1};
+
+        assert(r.has_exception_type<int>());
 
         bool is_visited = false;
         r.Catch([](void *p) {
@@ -52,6 +56,8 @@ int main(int argc, char* argv[])
     // Test specifing void as return type + ctor inplace exception + catch
     try {
         Ret_except<void, int, long, void*> r{std::in_place_type<int>, -1};
+
+        assert(r.has_exception_type<int>());
 
         bool is_visited = false;
         r.Catch([](void *p) {
@@ -80,6 +86,8 @@ int main(int argc, char* argv[])
     // Test ctor exception + dtor
     try {
         Ret_except<char, int, long, void*> r{-1};
+
+        assert(r.has_exception_type<int>());
     } catch (int i) {
         assert(i == -1);
     }
@@ -113,6 +121,7 @@ int main(int argc, char* argv[])
     // Test ctor exception + get_return_value
     try {
         Ret_except<char, int> r{-1};
+        assert(r.has_exception_type<int>());
         assert(r.get_return_value() == 'c');
     } catch (int i) {
         assert(i == -1);

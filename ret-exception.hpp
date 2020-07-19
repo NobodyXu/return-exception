@@ -226,6 +226,12 @@ public:
         return is_exception_handled;
     }
 
+    template <class Type>
+    bool has_exception_type() const noexcept
+    {
+        return std::holds_alternative<Type>(v);
+    }
+
     /**
      * Example:
      *     auto g() -> Ret_except<void, PageNotFound, std::runtime_error, std::invalid_argument>;
