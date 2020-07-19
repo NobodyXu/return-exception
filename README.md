@@ -15,8 +15,6 @@ Return errors in an unignorable way and have compile-time only Catch, which prod
 
 ## Usage
 
-### Example 1
-
 ```c++
 #include "/path/to/ret-exception.hpp"
 
@@ -87,54 +85,3 @@ If you run the compiler again with
 the executable to be even smaller.
 
 On my machine, I found it to be merely 8.9K, which definitely is not possible with c++ exceptions.
-
-### Example 2
-
-try-catch blocks alternative.
-
-```c++
-#include "/path/to/ret-exception.hpp"
-
-#include <limits>
-#include <stdexcept>
-
-#include <cstdio>
-#include <cstdint>
-#include <cinttypes>
-
-#include <err.h>
-
-template <class T>
-auto ftoi(long double f) noexcept -> Ret_except<T, std::invalid_argument, std::out_of_range>
-{
-    if (f == std::numeric_limits<float>::infinity())
-        return {std::invalid_argument{"f should not be INF"}};
-    else if (f > std::numeric_limits<T>::max())
-        return {std::out_of_range("f is too large")};
-    else if (f < std::numeric_limits<T>::min())
-        return {std::out_of_range("f is too small")};
-    return static_cast<T>(f);
-}
-
-int main(int argc, char* argv[])
-{
-    long double f;
-    std::scanf("%Lf", &f);
-
-    auto result = ftoi<std::uint64_t>(f);
-    if (result.has_exception_set()) {
-        result.Catch([](const std::out_of_range &e) noexcept {
-            // Catch out_of_range only
-            errx(1, "std::out_of_range: %s", e.what());
-        }).Catch([](const auto &e) noexcept {
-            // Catch any exception
-            errx(1, "In function %s: Catched exception %s", 
-                    __PRETTY_FUNCTION__, e.what());
-        }).get_return_value(); /* Get return value here when all exceptions are handled */
-    }
-
-    auto integer = result.get_return_value();
-    std::printf("%" PRIu64 "\n", integer);
-    return 0;
-}
-```
