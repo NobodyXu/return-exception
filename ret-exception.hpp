@@ -136,9 +136,9 @@ class Ret_except_t {
     struct Matcher {
         Ret_except_t &r;
     
-        template <class T, class decay_T = std::decay_t<T>,
-                  class = std::enable_if_t<holds_exp<decay_T>() && 
-                          ret_exception::impl::is_constructible<decay_T, T>()>>
+        template <class T, class decay_T = typename std::decay<T>::type,
+                  class = typename std::enable_if<holds_exp<decay_T>() && 
+                                                  ret_exception::impl::is_constructible<decay_T, T>()>::type>
         void operator () (T &&obj)
             noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>())
         {
@@ -150,7 +150,7 @@ class Ret_except_t {
     {
         if (has_exception && !is_exception_handled && !v.valueless_by_exception())
             visit([this](auto &&e) {
-                using Exception_t = std::decay_t<decltype(e)>;
+                using Exception_t = typename std::decay<decltype(e)>::type;
                 if constexpr(!std::is_same<Exception_t, Ret>::value && 
                              !std::is_same<Exception_t, monostate>::value) {
                     is_exception_handled = 1;
@@ -183,9 +183,9 @@ public:
      */
     Ret_except_t() = default;
 
-    template <class T, class decay_T = std::decay_t<T>, 
-              class = std::enable_if_t<holds_type<decay_T>() && 
-                      ret_exception::impl::is_constructible<decay_T, T>()>>
+    template <class T, class decay_T = typename std::decay<T>::type,
+              class = typename std::enable_if<holds_type<decay_T>() && 
+                                              ret_exception::impl::is_constructible<decay_T, T>()>::type>
     Ret_except_t(T &&obj)
         noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>()):
             has_exception{!std::is_same<decay_T, Ret>::value},
@@ -193,7 +193,8 @@ public:
     {}
 
     template <class T, class ...Args, 
-              class = std::enable_if_t<holds_type<T>() && std::is_constructible<T, Args...>::value>>
+              class = typename std::enable_if<holds_type<T>() && 
+                                              std::is_constructible<T, Args...>::value>::type>
     Ret_except_t(in_place_type_t<T> type, Args &&...args)
         noexcept(std::is_nothrow_constructible<T, Args...>::value):
             has_exception{!std::is_same<T, Ret>::value}, 
@@ -244,7 +245,7 @@ public:
     Ret_except_t& operator = (Ret_except_t&&) = delete;
 
     template <class T, class ...Args, 
-              class = std::enable_if_t<holds_exp<T>() && std::is_constructible<T, Args...>::value>>
+              class = typename std::enable_if<holds_exp<T>() && std::is_constructible<T, Args...>::value>::type>
     void set_exception(Args &&...args)
     {
         throw_if_hold_exp();
@@ -255,7 +256,7 @@ public:
     }
 
     template <class ...Args, 
-              class = std::enable_if_t<std::is_constructible<Ret, Args...>::value>>
+              class = typename std::enable_if<std::is_constructible<Ret, Args...>::value>::type>
     void set_return_value(Args &&...args)
     {
         throw_if_hold_exp();
@@ -296,10 +297,10 @@ public:
     {
        if (has_exception && !is_exception_handled && !v.valueless_by_exception())
             visit([&, this](auto &&e) {
-                using Exception_t = std::decay_t<decltype(e)>;
+                using Exception_t = typename std::decay<decltype(e)>::type;
 
                 if constexpr(!std::is_same<Exception_t, monostate>::value && !std::is_same<Exception_t, Ret>::value)
-                    if constexpr(std::is_invocable<std::decay_t<F>, Exception_t>::value) {
+                    if constexpr(std::is_invocable<typename std::decay<F>::type, Exception_t>::value) {
                         is_exception_handled = 1;
                         std::invoke(std::forward<F>(f), std::forward<decltype(e)>(e));
                     }
@@ -324,56 +325,56 @@ public:
      *         std::cout << s << std::endl;
      *     }
      */
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     auto& get_return_value() &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     auto& get_return_value() const &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     auto&& get_return_value() &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     auto&& get_return_value() const &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     operator T&() &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     operator const T&() const &
     {
         throw_if_hold_exp();
         return std::get<Ret>(v);
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     operator T&&() &&
     {
         throw_if_hold_exp();
         return std::get<Ret>(std::move(v));
     }
 
-    template <class T = Ret, class = std::enable_if_t<!std::is_void_v<T>>>
+    template <class T = Ret, class = typename std::enable_if<!std::is_void_v<T>>::type>
     operator const T&&() const &&
     {
         throw_if_hold_exp();
