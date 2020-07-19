@@ -299,7 +299,8 @@ public:
             visit([&, this](auto &&e) {
                 using Exception_t = typename std::decay<decltype(e)>::type;
 
-                if constexpr(!std::is_same<Exception_t, monostate>::value && !std::is_same<Exception_t, Ret>::value)
+                if constexpr(!std::is_same<Exception_t, monostate>::value && 
+                             !std::is_same<Exception_t, Ret>::value)
                     if constexpr(std::is_invocable<typename std::decay<F>::type, Exception_t>::value) {
                         is_exception_handled = 1;
                         std::invoke(std::forward<F>(f), std::forward<decltype(e)>(e));
