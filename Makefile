@@ -14,4 +14,10 @@ test2: test2.cc ret-exception.hpp
 clean:
 	rm -f test test2 test3 test4
 
+gendoc:
+	doxygen Doxyfile
+
+cleandoc:
+	rm -rf doc/*
+
 .PHONY: clean all
