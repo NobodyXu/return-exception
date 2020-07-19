@@ -28,15 +28,20 @@ constexpr auto type_name() -> const char*
 }
 
 template <template <typename...> class variant>
-struct holds_alternative_t {};
+struct variant_non_member_functions_t {};
 
 # if (__cplusplus >= 201703L)
 template <>
-struct holds_alternative_t<std::variant> {
+struct variant_non_member_functions_t<std::variant> {
     template <class T, class ...Types>
-    static constexpr bool holds_alternative_f(const std::variant<Types...> &v) noexcept
+    static constexpr bool holds_alternative(const std::variant<Types...> &v) noexcept
     {
         return std::holds_alternative<T>(v);
+    }
+    template <class T, class Variant>
+    static constexpr auto&& get(Variant &&v)
+    {
+        return std::get<T>(std::forward<Variant>(v));
     }
 };
 # endif
@@ -109,7 +114,7 @@ using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_fro
  * @tparam variant must has 
  *  - API identical to std::variant, including ADL-lookupable visit,
  *  - override ret_exception::impl::holds_alternative_t for variant and
- *    provides holds_alternative_t<variant>::holds_alternative_f, which should
+ *    provides variant_non_member_t<variant>::holds_alternative, which should
  *    has the same API as std::holds_alternative.
  *  - override std::get for you type
  * @tparam Ts... must not be void or the same type as Ret or has duplicated types.
@@ -117,7 +122,7 @@ using glue_ret_except_from_t = typename ret_exception::impl::glue_ret_except_fro
 template <template <typename...> class variant, template <class> class in_place_type_t, 
           class Ret, class ...Ts>
 class Ret_except_t {
-    using holds_alternative_t = ret_exception::impl::holds_alternative_t<variant>;
+    using variant_nonmem_f_t = ret_exception::impl::variant_non_member_functions_t<variant>;
 
     bool is_exception_handled = 0;
     bool has_exception = 0;
@@ -285,7 +290,7 @@ public:
     template <class T>
     bool has_exception_type() const noexcept
     {
-        return holds_alternative_t::template holds_alternative_f<T>(v);
+        return variant_nonmem_f_t::template holds_alternative<T>(v);
     }
 
     /**
@@ -338,56 +343,56 @@ public:
     auto& get_return_value() &
     {
         throw_if_hold_exp();
-        return std::get<Ret>(v);
+        return variant_nonmem_f_t::template get<Ret>(v);
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto& get_return_value() const &
     {
         throw_if_hold_exp();
-        return std::get<Ret>(v);
+        return variant_nonmem_f_t::template get<Ret>(v);
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto&& get_return_value() &&
     {
         throw_if_hold_exp();
-        return std::get<Ret>(std::move(v));
+        return variant_nonmem_f_t::template get<Ret>(std::move(v));
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     auto&& get_return_value() const &&
     {
         throw_if_hold_exp();
-        return std::get<Ret>(std::move(v));
+        return variant_nonmem_f_t::template get<Ret>(std::move(v));
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator T&() &
     {
         throw_if_hold_exp();
-        return std::get<Ret>(v);
+        return variant_nonmem_f_t::template get<Ret>(v);
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator const T&() const &
     {
         throw_if_hold_exp();
-        return std::get<Ret>(v);
+        return variant_nonmem_f_t::template get<Ret>(v);
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator T&&() &&
     {
         throw_if_hold_exp();
-        return std::get<Ret>(std::move(v));
+        return variant_nonmem_f_t::template get<Ret>(std::move(v));
     }
 
     template <class T = Ret, class = typename std::enable_if<!std::is_void<T>::value>::type>
     operator const T&&() const &&
     {
         throw_if_hold_exp();
-        return std::get<Ret>(std::move(v));
+        return variant_nonmem_f_t::template get<Ret>(std::move(v));
     }
 
     ~Ret_except_t() noexcept(false)
