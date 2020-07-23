@@ -189,6 +189,30 @@ class Ret_except_t {
             }, v);
     }
 
+    template <template <typename...> class variant2, template <class> class in_place_type_t2,
+              class Ret_t2, class ...Tps>
+    void from_other(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
+    {
+        if (r.has_exception_set())
+            r.Catch(Matcher{*this});
+        else {
+            if constexpr(!std::is_void<Ret_t2>::value)
+                set_return_value(r.get_return_value());
+        }
+    }
+
+    template <template <typename...> class variant2, template <class> class in_place_type_t2,
+              class Ret_t2, class ...Tps>
+    void from_other(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
+    {
+        if (r.has_exception_set())
+            std::move(r).Catch(Matcher{*this});
+        else {
+            if constexpr(!std::is_void<Ret_t2>::value)
+                set_return_value(std::move(r).get_return_value());
+        }
+    }
+
 public:
     /**
      * If Ret != void, default initializae Ret;
@@ -228,16 +252,10 @@ public:
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
-    Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
-        noexcept(noexcept(r.Catch(Matcher{*this}))):
+    Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r):
             v{in_place_type_t<monostate>{}}
     {
-        if (r.has_exception_set())
-            r.Catch(Matcher{*this});
-        else {
-            if constexpr(!std::is_void<Ret_t2>::value)
-                v.template emplace<Ret>(std::move(r.get_return_value()));
-        }
+        from_other(r);
     }
 
     /**
@@ -251,16 +269,10 @@ public:
                                           Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...>
                                       >::value>::type
              >
-    Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
-        noexcept(noexcept(std::move(r).Catch(Matcher{*this}))):
+    Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r):
             v{in_place_type_t<monostate>{}}
     {
-        if (r.has_exception_set())
-            std::move(r).Catch(Matcher{*this});
-        else {
-            if constexpr(!std::is_void<Ret_t2>::value)
-                v.template emplace<Ret>(std::move(r.get_return_value()));
-        }
+        from_other(std::move(r));
     }
 
     Ret_except_t(const Ret_except_t&) = delete;
@@ -285,14 +297,8 @@ public:
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
     Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
-        noexcept(noexcept(r.Catch(Matcher{*this})))
     {
-        if (r.has_exception_set())
-            r.Catch(Matcher{*this});
-        else {
-            if constexpr(!std::is_void<Ret_t2>::value)
-                v.template emplace<Ret>(std::move(r.get_return_value()));
-        }
+        from_other(std::move(r));
         return *this;
     }
     /**
@@ -302,14 +308,8 @@ public:
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
     Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
-        noexcept(noexcept(std::move(r).Catch(Matcher{*this})))
     {
-        if (r.has_exception_set())
-            std::move(r).Catch(Matcher{*this});
-        else {
-            if constexpr(!std::is_void<Ret_t2>::value)
-                v.template emplace<Ret>(std::move(r.get_return_value()));
-        }
+        from_other(std::move(r));
         return *this;
     }
 
