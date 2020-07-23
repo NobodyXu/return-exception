@@ -267,8 +267,34 @@ public:
         other.v.template emplace<monostate>();
     }
 
-    Ret_except_t& operator = (const Ret_except_t&) = delete;
-    Ret_except_t& operator = (Ret_except_t&&) = delete;
+    /**
+     * Would only cp/mv the exceptions of type E held by r only if
+     * E is also in Ts...
+     *
+     * It won't copy Ret.
+     */
+    template <template <typename...> class variant2, template <class> class in_place_type_t2,
+              class Ret_t2, class ...Tps>
+    Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
+        noexcept(noexcept(r.Catch(Matcher{*this})))
+    {
+        throw_if_hold_exp();
+        r.Catch(Matcher{*this});
+    }
+    /**
+     * Would only cp/mv the exceptions of type E held by r only if
+     * E is also in Ts...
+     *
+     * It won't copy Ret.
+     */
+    template <template <typename...> class variant2, template <class> class in_place_type_t2,
+              class Ret_t2, class ...Tps>
+    Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
+        noexcept(noexcept(std::move(r).Catch(Matcher{*this})))
+    {
+        throw_if_hold_exp();
+        std::move(r).Catch(Matcher{*this});
+    }
 
     /**
      * Replace the previous value with exception.
