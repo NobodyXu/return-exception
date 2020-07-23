@@ -150,15 +150,12 @@ class Ret_except_t {
         Ret_except_t &r;
     
         template <class T, class decay_T = typename std::decay<T>::type,
-                  class = typename std::enable_if<holds_type<decay_T>() && 
+                  class = typename std::enable_if<holds_exp<decay_T>() && 
                                                   ret_exception::impl::is_constructible<decay_T, T>()>::type>
         void operator () (T &&obj)
             noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>())
         {
-            if constexpr(std::is_same<decay_T, Ret>::value)
-                r.set_return_value(std::forward<T>(obj));
-            else
-                r.set_exception<decay_T>(std::forward<T>(obj));
+            r.set_exception<decay_T>(std::forward<T>(obj));
         }
     };
 
@@ -235,7 +232,10 @@ public:
         noexcept(noexcept(r.Catch(Matcher{*this}))):
             v{in_place_type_t<monostate>{}}
     {
-        r.Catch(Matcher{*this});
+        if (r.has_exception_set())
+            r.Catch(Matcher{*this});
+        else
+            v.template emplace<Ret>(std::move(r.get_return_value()));
     }
 
     /**
@@ -248,7 +248,10 @@ public:
         noexcept(noexcept(std::move(r).Catch(Matcher{*this}))):
             v{in_place_type_t<monostate>{}}
     {
-        std::move(r).Catch(Matcher{*this});
+        if (r.has_exception_set())
+            std::move(r).Catch(Matcher{*this});
+        else
+            v.template emplace<Ret>(std::move(r.get_return_value()));
     }
 
     Ret_except_t(const Ret_except_t&) = delete;
@@ -275,7 +278,10 @@ public:
     Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
         noexcept(noexcept(r.Catch(Matcher{*this})))
     {
-        r.Catch(Matcher{*this});
+        if (r.has_exception_set())
+            r.Catch(Matcher{*this});
+        else
+            v.template emplace<Ret>(std::move(r.get_return_value()));
         return *this;
     }
     /**
@@ -287,7 +293,10 @@ public:
     Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
         noexcept(noexcept(std::move(r).Catch(Matcher{*this})))
     {
-        std::move(r).Catch(Matcher{*this});
+        if (r.has_exception_set())
+            std::move(r).Catch(Matcher{*this});
+        else
+            v.template emplace<Ret>(std::move(r.get_return_value()));
         return *this;
     }
 
