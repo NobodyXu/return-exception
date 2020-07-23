@@ -41,6 +41,9 @@ protected:
     template <class T, class ...Args>
     void construct(in_place_type_t<T>, Args &&...args)
     {
+        static_assert(std::is_same_v<T, T1> || std::is_same_v<T, T2> || std::is_same_v<T, T3> || 
+                      std::is_same_v<T, T4>);
+
         try {
             if constexpr(std::is_same_v<T, T1>) {
                 index_v = 0;
@@ -48,10 +51,10 @@ protected:
             } else if constexpr(std::is_same_v<T, T2>) {
                 index_v = 1;
                 new (storage) T2(std::forward<Args>(args)...);
-            } else if constexpr(std::is_same_v<T, T2>) {
+            } else if constexpr(std::is_same_v<T, T3>) {
                 index_v = 2;
                 new (storage) T3(std::forward<Args>(args)...);
-            } else if constexpr(std::is_same_v<T, T2>) {
+            } else if constexpr(std::is_same_v<T, T4>) {
                 index_v = 3;
                 new (storage) T4(std::forward<Args>(args)...);
             } else
@@ -350,5 +353,4 @@ int main(int argc, char* argv[])
     }
 
     return 0;
-
 }
