@@ -150,12 +150,15 @@ class Ret_except_t {
         Ret_except_t &r;
     
         template <class T, class decay_T = typename std::decay<T>::type,
-                  class = typename std::enable_if<holds_exp<decay_T>() && 
+                  class = typename std::enable_if<holds_type<decay_T>() && 
                                                   ret_exception::impl::is_constructible<decay_T, T>()>::type>
         void operator () (T &&obj)
             noexcept(ret_exception::impl::is_nothrow_constructible<decay_T, T>())
         {
-            r.set_exception<decay_T>(std::forward<T>(obj));
+            if constexpr(std::is_same<decay_T, Ret>::value)
+                r.set_return_value(std::forward<T>(obj));
+            else
+                r.set_exception<decay_T>(std::forward<T>(obj));
         }
     };
 
@@ -223,10 +226,8 @@ public:
     {}
 
     /**
-     * This ctor would only cp/mv the exceptions of type E held by r only if
-     * E is also in Ts...
-     *
-     * It won't copy Ret.
+     * This ctor would only cp/mv the exceptions of type Type held by r only if
+     * Type is also in Ts...
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
@@ -238,10 +239,8 @@ public:
     }
 
     /**
-     * This ctor would only cp/mv the exceptions of type E held by r only if
-     * E is also in Ts...
-     *
-     * It won't copy Ret.
+     * This ctor would only cp/mv the exceptions of type Type held by r only if
+     * Type is also in Ts...
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
@@ -268,10 +267,8 @@ public:
     }
 
     /**
-     * Would only cp/mv the exceptions of type E held by r only if
-     * E is also in Ts...
-     *
-     * It won't copy Ret.
+     * Would only cp/mv the exceptions of type Type held by r only if
+     * Type is also in Ts...
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
@@ -282,10 +279,8 @@ public:
         return *this;
     }
     /**
-     * Would only cp/mv the exceptions of type E held by r only if
-     * E is also in Ts...
-     *
-     * It won't copy Ret.
+     * Would only cp/mv the exceptions of type Type held by r only if
+     * Type is also in Ts...
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
