@@ -278,7 +278,6 @@ public:
     Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &r)
         noexcept(noexcept(r.Catch(Matcher{*this})))
     {
-        throw_if_hold_exp();
         r.Catch(Matcher{*this});
         return *this;
     }
@@ -293,7 +292,6 @@ public:
     Ret_except_t& operator = (Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
         noexcept(noexcept(std::move(r).Catch(Matcher{*this})))
     {
-        throw_if_hold_exp();
         std::move(r).Catch(Matcher{*this});
         return *this;
     }
