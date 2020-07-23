@@ -4,7 +4,7 @@ LDFLAGS := -Wl,--strip-all
 all: test test2 test3 test4
 
 %: %.cc ret-exception.hpp
-	$(CXX) test.cc $(CXXFLAGS) $(LDFLAGS) -o $@
+	$(CXX) $< $(CXXFLAGS) $(LDFLAGS) -o $@
 	./$@
 
 test2: test2.cc ret-exception.hpp
