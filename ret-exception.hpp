@@ -280,6 +280,7 @@ public:
     {
         throw_if_hold_exp();
         r.Catch(Matcher{*this});
+        return *this;
     }
     /**
      * Would only cp/mv the exceptions of type E held by r only if
@@ -294,6 +295,7 @@ public:
     {
         throw_if_hold_exp();
         std::move(r).Catch(Matcher{*this});
+        return *this;
     }
 
     /**
