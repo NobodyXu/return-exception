@@ -234,8 +234,10 @@ public:
     {
         if (r.has_exception_set())
             r.Catch(Matcher{*this});
-        else
-            v.template emplace<Ret>(std::move(r.get_return_value()));
+        else {
+            if constexpr(!std::is_void<Ret_t2>::value)
+                v.template emplace<Ret>(std::move(r.get_return_value()));
+        }
     }
 
     /**
@@ -243,15 +245,22 @@ public:
      * Type is also in Ts...
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
-              class Ret_t2, class ...Tps>
-    Ret_except_t(Ret_except_t<variant2, in_place_type_t, Ret_t2, Tps...> &&r)
+              class Ret_t2, class ...Tps,
+              class = typename std::enable_if<!std::is_same<
+                                          Ret_except_t, 
+                                          Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...>
+                                      >::value>::type
+             >
+    Ret_except_t(Ret_except_t<variant2, in_place_type_t2, Ret_t2, Tps...> &&r)
         noexcept(noexcept(std::move(r).Catch(Matcher{*this}))):
             v{in_place_type_t<monostate>{}}
     {
         if (r.has_exception_set())
             std::move(r).Catch(Matcher{*this});
-        else
-            v.template emplace<Ret>(std::move(r.get_return_value()));
+        else {
+            if constexpr(!std::is_void<Ret_t2>::value)
+                v.template emplace<Ret>(std::move(r.get_return_value()));
+        }
     }
 
     Ret_except_t(const Ret_except_t&) = delete;
@@ -280,8 +289,10 @@ public:
     {
         if (r.has_exception_set())
             r.Catch(Matcher{*this});
-        else
-            v.template emplace<Ret>(std::move(r.get_return_value()));
+        else {
+            if constexpr(!std::is_void<Ret_t2>::value)
+                v.template emplace<Ret>(std::move(r.get_return_value()));
+        }
         return *this;
     }
     /**
@@ -295,8 +306,10 @@ public:
     {
         if (r.has_exception_set())
             std::move(r).Catch(Matcher{*this});
-        else
-            v.template emplace<Ret>(std::move(r.get_return_value()));
+        else {
+            if constexpr(!std::is_void<Ret_t2>::value)
+                v.template emplace<Ret>(std::move(r.get_return_value()));
+        }
         return *this;
     }
 
