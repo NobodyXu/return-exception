@@ -117,23 +117,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afa4bf58baa80acf6d94e8b112032c805"><td class="memTemplParams" colspan="2">template&lt;class T , class ... Args, class  = typename std::enable_if&lt;holds_type&lt;T&gt;() &amp;&amp;                                               std::is_constructible&lt;T, Args...&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:afa4bf58baa80acf6d94e8b112032c805"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#afa4bf58baa80acf6d94e8b112032c805">Ret_except_t</a> (in_place_type_t&lt; T &gt; type, Args &amp;&amp;...args) noexcept(std::is_nothrow_constructible&lt; T, Args... &gt;::value)</td></tr>
 <tr class="separator:afa4bf58baa80acf6d94e8b112032c805"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3a68f9fb80c47cf6a023e66c87ed08d"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </td></tr>
-<tr class="memitem:aa3a68f9fb80c47cf6a023e66c87ed08d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#aa3a68f9fb80c47cf6a023e66c87ed08d">Ret_except_t</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;r) noexcept(noexcept(r.Catch(Matcher{ *this})))</td></tr>
-<tr class="separator:aa3a68f9fb80c47cf6a023e66c87ed08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c93f6b33ec7346495c940577f5db995"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </td></tr>
-<tr class="memitem:a3c93f6b33ec7346495c940577f5db995"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#a3c93f6b33ec7346495c940577f5db995">Ret_except_t</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t, Ret_t2, Tps... &gt; &amp;&amp;r) noexcept(noexcept(std::move(r).<a class="el" href="classRet__except__t.html#a95a6eb8d59eb658de51ab3189e301250">Catch</a>(Matcher{ *this})))</td></tr>
-<tr class="separator:a3c93f6b33ec7346495c940577f5db995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42fa3fd3ace0f85d06815d351d18b6c5"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </td></tr>
+<tr class="memitem:a42fa3fd3ace0f85d06815d351d18b6c5"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#a42fa3fd3ace0f85d06815d351d18b6c5">Ret_except_t</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;r)</td></tr>
+<tr class="separator:a42fa3fd3ace0f85d06815d351d18b6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b6c0c06373cf4438eb2db4fb46d1d1"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps, class  = typename std::enable_if&lt;!std::is_same&lt;                                          Ret_except_t,                                           Ret_except_t&lt;variant2, in_place_type_t2, Ret_t2, Tps...&gt;                                      &gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a15b6c0c06373cf4438eb2db4fb46d1d1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#a15b6c0c06373cf4438eb2db4fb46d1d1">Ret_except_t</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;&amp;r)</td></tr>
+<tr class="separator:a15b6c0c06373cf4438eb2db4fb46d1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fa17e4596adeb614ca825c319d61c08"><td class="memItemLeft" align="right" valign="top"><a id="a2fa17e4596adeb614ca825c319d61c08"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Ret_except_t</b> (const <a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;)=delete</td></tr>
 <tr class="separator:a2fa17e4596adeb614ca825c319d61c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0297ebaaf695380b9c58e8a32c3c5896"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#a0297ebaaf695380b9c58e8a32c3c5896">Ret_except_t</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;&amp;other) noexcept(std::is_nothrow_move_constructible&lt; variant_t &gt;::value)</td></tr>
 <tr class="separator:a0297ebaaf695380b9c58e8a32c3c5896"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fa3759d1dceaf581ec64b6b6374cbd7"><td class="memItemLeft" align="right" valign="top"><a id="a0fa3759d1dceaf581ec64b6b6374cbd7"></a>
-<a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;)=delete</td></tr>
-<tr class="separator:a0fa3759d1dceaf581ec64b6b6374cbd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe6e820ab77fb826b85b6c861408f76f"><td class="memItemLeft" align="right" valign="top"><a id="abe6e820ab77fb826b85b6c861408f76f"></a>
-<a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;&amp;)=delete</td></tr>
-<tr class="separator:abe6e820ab77fb826b85b6c861408f76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aface1e94650b93e18d63bec17878c9a6"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </td></tr>
+<tr class="memitem:aface1e94650b93e18d63bec17878c9a6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#aface1e94650b93e18d63bec17878c9a6">operator=</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;r)</td></tr>
+<tr class="separator:aface1e94650b93e18d63bec17878c9a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc5d92203f75e6f5f0e4556902d4640"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </td></tr>
+<tr class="memitem:abbc5d92203f75e6f5f0e4556902d4640"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classRet__except__t.html">Ret_except_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#abbc5d92203f75e6f5f0e4556902d4640">operator=</a> (<a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;&amp;r)</td></tr>
+<tr class="separator:abbc5d92203f75e6f5f0e4556902d4640"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef66a0efc0699bcdd821fb713f523f42"><td class="memTemplParams" colspan="2">template&lt;class T , class ... Args, class  = typename std::enable_if&lt;holds_exp&lt;T&gt;() &amp;&amp; std::is_constructible&lt;T, Args...&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:aef66a0efc0699bcdd821fb713f523f42"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classRet__except__t.html#aef66a0efc0699bcdd821fb713f523f42">set_exception</a> (Args &amp;&amp;...args)</td></tr>
 <tr class="separator:aef66a0efc0699bcdd821fb713f523f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,11 +266,11 @@ template&lt;class T , class decay_T  = typename std::decay&lt;T&gt;::type, class
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00206">206</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                                                                         :</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            has_exception{!std::is_same&lt;decay_T, Ret&gt;::value},</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            v{in_place_type_t&lt;decay_T&gt;{}, std::forward&lt;T&gt;(obj)}</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    {}</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00230">230</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;                                                                         :</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            has_exception{!std::is_same&lt;decay_T, Ret&gt;::value},</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;            v{in_place_type_t&lt;decay_T&gt;{}, std::forward&lt;T&gt;(obj)}</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    {}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -318,16 +318,16 @@ template&lt;class T , class ... Args, class  = typename std::enable_if&lt;holds_
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00219">219</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                                                              :</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            has_exception{!std::is_same&lt;T, Ret&gt;::value}, </div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            v{type, std::forward&lt;Args&gt;(args)...}</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    {}</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00243">243</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;                                                              :</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;            has_exception{!std::is_same&lt;T, Ret&gt;::value}, </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            v{type, std::forward&lt;Args&gt;(args)...}</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    {}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="aa3a68f9fb80c47cf6a023e66c87ed08d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3a68f9fb80c47cf6a023e66c87ed08d">&#9670;&nbsp;</a></span>Ret_except_t() <span class="overload">[4/6]</span></h2>
+<a id="a42fa3fd3ace0f85d06815d351d18b6c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42fa3fd3ace0f85d06815d351d18b6c5">&#9670;&nbsp;</a></span>Ret_except_t() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -349,31 +349,30 @@ template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This ctor would only cp/mv the exceptions of type E held by r only if E is also in Ts...</p>
-<p>It won't copy Ret. </p>
+<p>This ctor would only cp/mv the exceptions of type Type held by r only if Type is also in Ts... </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00233">233</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                                         {*<span class="keyword">this</span>}))):</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            v{in_place_type_t&lt;monostate&gt;{}}</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    {</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        r.<a class="code" href="classRet__except__t.html#a95a6eb8d59eb658de51ab3189e301250">Catch</a>(Matcher{*<span class="keyword">this</span>});</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00255">255</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                                                                             :</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;            v{in_place_type_t&lt;monostate&gt;{}}</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        from_other(r);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a3c93f6b33ec7346495c940577f5db995"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c93f6b33ec7346495c940577f5db995">&#9670;&nbsp;</a></span>Ret_except_t() <span class="overload">[5/6]</span></h2>
+<a id="a15b6c0c06373cf4438eb2db4fb46d1d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15b6c0c06373cf4438eb2db4fb46d1d1">&#9670;&nbsp;</a></span>Ret_except_t() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;template&lt; typename... &gt; class variant, template&lt; class &gt; class in_place_type_t, class Ret , class ... Ts&gt; </div>
 <div class="memtemplate">
-template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </div>
+template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps, class  = typename std::enable_if&lt;!std::is_same&lt;                                          Ret_except_t,                                           Ret_except_t&lt;variant2, in_place_type_t2, Ret_t2, Tps...&gt;                                      &gt;::value&gt;::type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -381,26 +380,25 @@ template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt
         <tr>
           <td class="memname"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant, in_place_type_t, Ret, Ts &gt;::<a class="el" href="classRet__except__t.html">Ret_except_t</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t, Ret_t2, Tps... &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;&amp;&#160;</td>
           <td class="paramname"><em>r</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This ctor would only cp/mv the exceptions of type E held by r only if E is also in Ts...</p>
-<p>It won't copy Ret. </p>
+<p>This ctor would only cp/mv the exceptions of type Type held by r only if Type is also in Ts... </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00248">248</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;                                                  {*<span class="keyword">this</span>}))):</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;            v{in_place_type_t&lt;monostate&gt;{}}</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        std::move(r).Catch(Matcher{*<span class="keyword">this</span>});</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00272">272</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                                                                              :</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;            v{in_place_type_t&lt;monostate&gt;{}}</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        from_other(std::move(r));</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -431,15 +429,15 @@ template&lt;template&lt; typename... &gt; class variant, template&lt; class &gt;
 </div><div class="memdoc">
 <p>move constructor is required as NRVO isn't guaranteed to happen. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00260">260</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                                                                  :</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            is_exception_handled{other.is_exception_handled},</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;            has_exception{other.has_exception},</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            v{std::move(other.v)}</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    {</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        other.has_exception = 0;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        other.v.template emplace&lt;monostate&gt;();</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00283">283</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;                                                                  :</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            is_exception_handled{other.is_exception_handled},</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            has_exception{other.has_exception},</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;            v{std::move(other.v)}</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    {</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        other.has_exception = 0;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        other.v.template emplace&lt;monostate&gt;();</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -469,14 +467,88 @@ template&lt;template&lt; typename... &gt; class variant, template&lt; class &gt;
 </div><div class="memdoc">
 <p>If an exception is contained in this object and it is not handled when dtor is called, this would cause the program to terminate. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00449">449</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    {</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;        throw_if_hold_exp();</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00494">494</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    {</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        throw_if_hold_exp();</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="aface1e94650b93e18d63bec17878c9a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aface1e94650b93e18d63bec17878c9a6">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;template&lt; typename... &gt; class variant, template&lt; class &gt; class in_place_type_t, class Ret , class ... Ts&gt; </div>
+<div class="memtemplate">
+template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&amp; <a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant, in_place_type_t, Ret, Ts &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Would only cp/mv the exceptions of type Type held by r only if Type is also in Ts... </p>
+
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00299">299</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        from_other(std::move(r));</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="abbc5d92203f75e6f5f0e4556902d4640"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbc5d92203f75e6f5f0e4556902d4640">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;template&lt; typename... &gt; class variant, template&lt; class &gt; class in_place_type_t, class Ret , class ... Ts&gt; </div>
+<div class="memtemplate">
+template&lt;template&lt; typename... &gt; class variant2, template&lt; class &gt; class in_place_type_t2, class Ret_t2 , class ... Tps&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&amp; <a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant, in_place_type_t, Ret, Ts &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classRet__except__t.html">Ret_except_t</a>&lt; variant2, in_place_type_t2, Ret_t2, Tps... &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>r</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Would only cp/mv the exceptions of type Type held by r only if Type is also in Ts... </p>
+
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00310">310</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    {</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;        from_other(std::move(r));</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    }</div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="aef66a0efc0699bcdd821fb713f523f42"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef66a0efc0699bcdd821fb713f523f42">&#9670;&nbsp;</a></span>set_exception()</h2>
 
@@ -507,14 +579,14 @@ template&lt;class T , class ... Args, class  = typename std::enable_if&lt;holds_
 <p>Replace the previous value with exception.</p>
 <p>If an exception is contained in this object and it is not handled when this function is called, this would cause the program to terminate. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00281">281</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    {</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        throw_if_hold_exp();</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        is_exception_handled = 0;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        has_exception = 1;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        v.template emplace&lt;T&gt;(std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00324">324</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    {</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        throw_if_hold_exp();</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        is_exception_handled = 0;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        has_exception = 1;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        v.template emplace&lt;T&gt;(std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -548,13 +620,13 @@ template&lt;class ... Args, class  = typename std::enable_if&lt;std::is_construc
 <p>Replace the previous value with return value.</p>
 <p>If an exception is contained in this object and it is not handled when this function is called, this would cause the program to terminate. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00298">298</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        throw_if_hold_exp();</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        has_exception = 0;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        v.template emplace&lt;Ret&gt;(std::forward&lt;Args&gt;(args)...);</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00341">341</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    {</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        throw_if_hold_exp();</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        has_exception = 0;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        v.template emplace&lt;Ret&gt;(std::forward&lt;Args&gt;(args)...);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -586,10 +658,10 @@ template&lt;class T &gt; </div>
 </div><div class="memdoc">
 <p>Test whether this object contain exception of type T. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00319">319</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    {</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template holds_alternative&lt;T&gt;(v);</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00362">362</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    {</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template holds_alternative&lt;T&gt;(v);</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -622,24 +694,25 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Catch and handle the exception.</p>
+<dl class="section post"><dt>Postcondition</dt><dd>has_exception_set() == true, has_exception_handled() == true</dd></dl>
 <p>Example: auto g() -&gt; Ret_except&lt;void, PageNotFound, std::runtime_error, std::invalid_argument&gt;; void f() { g().Catch([](const std::runtime_error &amp;e) { return; }).Catch([](const auto &amp;e) { throw e; }); } </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00339">339</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    {</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;       <span class="keywordflow">if</span> (has_exception &amp;&amp; !is_exception_handled &amp;&amp; !v.valueless_by_exception())</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;            visit([&amp;, <span class="keyword">this</span>](<span class="keyword">auto</span> &amp;&amp;e) {</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                <span class="keyword">using</span> Exception_t = <span class="keyword">typename</span> std::decay&lt;decltype(e)&gt;::type;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                <span class="keywordflow">if</span> constexpr(!std::is_same&lt;Exception_t, monostate&gt;::value &amp;&amp; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                             !std::is_same&lt;Exception_t, Ret&gt;::value)</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                    <span class="keywordflow">if</span> constexpr(std::is_invocable&lt;<span class="keyword">typename</span> std::decay&lt;F&gt;::type, Exception_t&gt;::value) {</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                        is_exception_handled = 1;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;                        std::invoke(std::forward&lt;F&gt;(f), std::forward&lt;decltype(e)&gt;(e));</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;                    }</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;            }, v);</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00384">384</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;       <span class="keywordflow">if</span> (has_exception &amp;&amp; !is_exception_handled &amp;&amp; !v.valueless_by_exception())</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;            visit([&amp;, <span class="keyword">this</span>](<span class="keyword">auto</span> &amp;&amp;e) {</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                <span class="keyword">using</span> Exception_t = <span class="keyword">typename</span> std::decay&lt;decltype(e)&gt;::type;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                <span class="keywordflow">if</span> constexpr(!std::is_same&lt;Exception_t, monostate&gt;::value &amp;&amp; </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                             !std::is_same&lt;Exception_t, Ret&gt;::value)</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                    <span class="keywordflow">if</span> constexpr(std::is_invocable&lt;<span class="keyword">typename</span> std::decay&lt;F&gt;::type, Exception_t&gt;::value) {</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                        is_exception_handled = 1;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;                        std::invoke(std::forward&lt;F&gt;(f), std::forward&lt;decltype(e)&gt;(e));</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;                    }</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            }, v);</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -674,11 +747,11 @@ template&lt;class T  = Ret, class  = typename std::enable_if&lt;!std::is_void&lt
 <p>Example: auto g() -&gt; Ret_except&lt;std::string, PageNotFound, std::runtime_error, std::invalid_argument&gt;; void f() { auto ret = g(); ret.Catch([](const std::runtime_error &amp;e) { return; }).Catch([](const auto &amp;e) { throw e; });</p>
 <p>auto &amp;s = ret.get_return_value(); std::cout &lt;&lt; s &lt;&lt; std::endl; } </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00378">378</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    {</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        throw_if_hold_exp();</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template get&lt;Ret&gt;(v);</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00423">423</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    {</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        throw_if_hold_exp();</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template get&lt;Ret&gt;(v);</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -711,11 +784,11 @@ template&lt;class T  = Ret, class  = typename std::enable_if&lt;!std::is_void&lt
 <p>Get the return value.</p>
 <p>If an exception is contained in this object and it is not handled when this function is called, this would cause the program to terminate. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00391">391</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    {</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        throw_if_hold_exp();</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template get&lt;Ret&gt;(v);</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00436">436</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    {</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        throw_if_hold_exp();</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template get&lt;Ret&gt;(v);</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -748,11 +821,11 @@ template&lt;class T  = Ret, class  = typename std::enable_if&lt;!std::is_void&lt
 <p>Get the return value.</p>
 <p>If an exception is contained in this object and it is not handled when this function is called, this would cause the program to terminate. </p>
 
-<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00418">418</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    {</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        throw_if_hold_exp();</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template get&lt;Ret&gt;(v);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="ret-exception_8hpp_source.html#l00463">463</a> of file <a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    {</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        throw_if_hold_exp();</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        <span class="keywordflow">return</span> variant_nonmem_f_t::template get&lt;Ret&gt;(v);</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -760,10 +833,9 @@ template&lt;class T  = Ret, class  = typename std::enable_if&lt;!std::is_void&lt
 <li><a class="el" href="ret-exception_8hpp_source.html">ret-exception.hpp</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="aclassRet__except__t_html_a95a6eb8d59eb658de51ab3189e301250"><div class="ttname"><a href="classRet__except__t.html#a95a6eb8d59eb658de51ab3189e301250">Ret_except_t::Catch</a></div><div class="ttdeci">auto Catch(F &amp;&amp;f) -&gt; Ret_except_t &amp;</div><div class="ttdef"><b>Definition:</b> <a href="ret-exception_8hpp_source.html#l00339">ret-exception.hpp:339</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 19 2020 21:13:08 for return-exception by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2020 19:21:00 for return-exception by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
