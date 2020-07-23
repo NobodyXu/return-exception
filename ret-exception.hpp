@@ -196,7 +196,8 @@ class Ret_except_t {
         if (r.has_exception_set())
             r.Catch(Matcher{*this});
         else {
-            if constexpr(!std::is_void<Ret_t2>::value && !std::is_void<Ret>::value)
+            if constexpr(!std::is_void<Ret_t2>::value && !std::is_void<Ret>::value && 
+                         std::is_constructible<Ret, Ret_t2>::value)
                 set_return_value(r.get_return_value());
         }
     }
@@ -208,7 +209,8 @@ class Ret_except_t {
         if (r.has_exception_set())
             std::move(r).Catch(Matcher{*this});
         else {
-            if constexpr(!std::is_void<Ret_t2>::value && !std::is_void<Ret>::value)
+            if constexpr(!std::is_void<Ret_t2>::value && !std::is_void<Ret>::value && 
+                         std::is_constructible<Ret, Ret_t2>::value)
                 set_return_value(std::move(r).get_return_value());
         }
     }
