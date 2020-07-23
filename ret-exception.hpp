@@ -251,6 +251,9 @@ public:
     /**
      * This ctor would only cp/mv the exceptions of type Type held by r only if
      * Type is also in Ts...
+     *
+     * Return value is a bit special here: If return value from r is convertible
+     * to Ret, then it will be copied if r contains return value.
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
@@ -263,6 +266,9 @@ public:
     /**
      * This ctor would only cp/mv the exceptions of type Type held by r only if
      * Type is also in Ts...
+     *
+     * Return value is a bit special here: If return value from r is convertible
+     * to Ret, then it will be moved if r contains return value.
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps,
@@ -295,6 +301,9 @@ public:
     /**
      * Would only cp/mv the exceptions of type Type held by r only if
      * Type is also in Ts...
+     *
+     * Return value is a bit special here: If return value from r is convertible
+     * to Ret, then it will be copied if r contains return value.
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
@@ -306,6 +315,9 @@ public:
     /**
      * Would only cp/mv the exceptions of type Type held by r only if
      * Type is also in Ts...
+     *
+     * Return value is a bit special here: If return value from r is convertible
+     * to Ret, then it will be moved if r contains return value.
      */
     template <template <typename...> class variant2, template <class> class in_place_type_t2,
               class Ret_t2, class ...Tps>
