@@ -45,6 +45,17 @@ int main(int argc, char* argv[])
         assert(false);
     }
 
+    // cp ctor of ret from other Ret_except
+    try {
+        Ret_except<int, void*> r2{-1};
+        Ret_except<int, char> r1{r2};
+
+        assert(r2.get_return_value() == -1);
+        assert(r1.get_return_value() == -1);
+    } catch (...) {
+        assert(false);
+    }
+
     // mv ctor from other Ret_except
     try {
         Ret_except_t1 r1{Ret_except_t2{static_cast<void*>(nullptr)}};
@@ -56,6 +67,18 @@ int main(int argc, char* argv[])
             is_visited = true;
         });
         assert(is_visited);
+    } catch (...) {
+        assert(false);
+    }
+
+    // mv ctor ret from other Ret_except
+    try {
+        Ret_except<std::vector<int>, void*> r2{std::vector{-1}};
+        Ret_except<std::vector<int>, char> r1{std::move(r2)};
+
+        assert(r2.get_return_value().size() == 0);
+        assert(r1.get_return_value().size() == 1);
+        assert(r1.get_return_value()[0] == -1);
     } catch (...) {
         assert(false);
     }
